@@ -4,6 +4,8 @@ var typed = new Typed('.animate', {
         "a Student",
         "a Backend developer",
         "a Frontend developer",
+        "a Web developer",
+        "a App developer",
         ],
         typeSpeed:50,
         backDelay: 900,
