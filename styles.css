@@ -400,3 +400,122 @@ body{
     opacity:0.8;
    padding:70px 20px 70px 20px;
 }
+
+/* ============================================ */
+/* NEW PROJECTS SECTION STYLES - ADDED BELOW */
+/* ============================================ */
+
+#projects {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+    min-height: 100vh;
+}
+
+#projects h4 {
+    color: aliceblue;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin: 40px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.project-card {
+    background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 255, 13, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 255, 13, 0.2);
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 48px rgba(0, 255, 13, 0.3);
+    border-color: rgba(0, 255, 13, 0.5);
+}
+
+.project-title {
+    color: #00ff0d;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.project-description {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tech-badge {
+    background: rgba(0, 255, 13, 0.1);
+    color: #00ff0d;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    border: 1px solid rgba(0, 255, 13, 0.3);
+    transition: all 0.3s ease;
+}
+
+.tech-badge:hover {
+    background: rgba(0, 255, 13, 0.2);
+    transform: scale(1.05);
+}
+
+.project-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-project {
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-project i {
+    margin-right: 8px;
+}
+
+.btn-project:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 255, 13, 0.3);
+}
+
+/* Responsive Design for Projects */
+@media (max-width: 768px) {
+    .projects-container {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+    }
+    
+    .project-card {
+        padding: 20px;
+    }
+    
+    .project-title {
+        font-size: 20px;
+    }
+    
+    #projects {
+        min-height: auto;
+        padding: 30px 10px;
+    }
+}
