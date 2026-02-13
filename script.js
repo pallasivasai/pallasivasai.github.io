@@ -2,9 +2,9 @@
 var typed = new Typed('.animate', {
     strings: [
         "P Siva Sai",
-        "a Student",
+        "a Learner",
+        "a SQL Developer",
         "a Backend Developer",
-        "a Frontend Developer",
         "a Web Developer",
         "a Full Stack Developer",
     ],
