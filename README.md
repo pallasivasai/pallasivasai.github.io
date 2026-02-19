@@ -112,6 +112,5 @@ I'm seeking an entry-level SQL Developer position where I can:
 
 ---
 
-*Thank you for visiting my repository! Feel free to explore my portfolio and reach out if you have any opportunities or questions.*
 
 **#OpenToWork #SQLDeveloper #EntryLevel #DataAnalysis #DatabaseManagement #DataVisualization #Dashboards #KPI #BusinessIntelligence**
