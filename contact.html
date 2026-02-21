@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Palla Sivasai</title>
+
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+  <style>
+    :root{
+      --bg: #000;
+      --text: aliceblue;
+      --accent: #00ff0d;
+      --muted: #cfcfcf;
+
+      --card-bg: rgba(20, 20, 20, 0.72);
+      --card-border: rgba(0, 255, 13, 0.16);
+      --card-border-hover: rgba(0, 255, 13, 0.70);
+
+      --shadow: 0 18px 45px rgba(0, 255, 13, 0.10);
+      --shadow-strong: 0 26px 70px rgba(0, 255, 13, 0.16);
+
+      --radius: 18px;
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* Trending animated background glow */
+    .bg-glow{
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(900px 500px at 15% 20%, rgba(0, 255, 13, 0.12), transparent 60%),
+        radial-gradient(700px 500px at 85% 15%, rgba(30, 144, 255, 0.10), transparent 60%),
+        radial-gradient(900px 600px at 50% 85%, rgba(0, 255, 13, 0.10), transparent 62%);
+      filter: saturate(1.1);
+      animation: floatGlow 7s ease-in-out infinite;
+    }
+    @keyframes floatGlow{
+      0%,100%{ transform: translate3d(0,0,0); }
+      50%{ transform: translate3d(0,-10px,0); }
+    }
+
+    /* Topbar */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .topbar a{
+      text-decoration: none;
+      color: var(--text);
+    }
+    .topbar .brand{
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .brand-badge{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      background: linear-gradient(135deg, rgba(0,255,13,1), rgba(30,144,255,1));
+      box-shadow: 0 10px 26px rgba(0,255,13,0.10);
+      font-weight: 900;
+    }
+
+    .topbar .back{
+      color: dodgerblue;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(30, 144, 255, 0.25);
+      background: rgba(30,144,255,0.06);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .topbar .back:hover{
+      color: var(--accent);
+      border-color: rgba(0,255,13,0.55);
+      box-shadow: 0 14px 35px rgba(0,255,13,0.12);
+      transform: translateY(-2px);
+    }
+
+    .section{
+      padding: 70px 18px 90px;
+      min-height: calc(100vh - 60px);
+    }
+
+    .hero{
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .title{
+      margin: 0;
+      font-size: 46px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 22px rgba(0,255,13,0.18);
+    }
+
+    .subtitle{
+      margin: 10px auto 0;
+      color: var(--text);
+      font-size: 18px;
+      max-width: 70ch;
+      line-height: 1.55;
+      opacity: 0.95;
+    }
+
+    .subtitle .dash{
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .hint{
+      margin-top: 16px;
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,255,13,0.20);
+      background: rgba(0,255,13,0.06);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid{
+      max-width: 1100px;
+      margin: 45px auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+      padding: 0 10px;
+    }
+
+    .card{
+      position: relative;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 20px;
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+
+      transform: translateY(0);
+      transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease,
+        border-color 0.28s ease,
+        background 0.28s ease;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+
+    /* gradient hover shine */
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(120deg, transparent, rgba(0,255,13,0.14), rgba(30,144,255,0.12), transparent);
+      transform: translateX(-60%);
+      opacity: 0;
+      transition: transform 0.6s ease, opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .card:hover{
+      transform: translateY(-10px);
+      border-color: var(--card-border-hover);
+      box-shadow: var(--shadow-strong);
+      background: rgba(22,22,22,0.78);
+    }
+    .card:hover::before{
+      opacity: 1;
+      transform: translateX(60%);
+    }
+
+    /* icon box: use EMOJI ONLY (as you asked) */
+    .icon{
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 255, 13, 0.09);
+      border: 1px solid rgba(0, 255, 13, 0.28);
+      flex: 0 0 auto;
+      box-shadow: 0 12px 26px rgba(0,255,13,0.08);
+      transition: transform 0.28s ease, background 0.28s ease, border-color 0.28s ease;
+      font-size: 26px; /* emoji size */
+      line-height: 1;
+    }
+
+    .card:hover .icon{
+      transform: rotate(-4deg) scale(1.05);
+      border-color: rgba(0,255,13,0.55);
+      background: rgba(0, 255, 13, 0.12);
+    }
+
+    .text{
+      min-width: 0;
+    }
+
+    .text h3{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .text p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      opacity: 0.95;
+    }
+
+    .footer{
+      max-width: 1100px;
+      margin: 34px auto 0;
+      text-align: center;
+      color: var(--text);
+      padding: 0 10px;
+    }
+
+    .footer .direct{
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px);
+    }
+
+    .footer a{
+      color: dodgerblue;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(30,144,255,0.55);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .footer a:hover{
+      color: var(--accent);
+      border-bottom-color: rgba(0,255,13,0.65);
+    }
+
+    /* Small animation on load */
+    .fade-up{
+      animation: fadeUp 0.7s ease both;
+    }
+    @keyframes fadeUp{
+      from{ opacity: 0; transform: translateY(10px); }
+      to{ opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="topbar">
+    <div class="brand">
+      <span class="brand-badge">PS</span>
+      <span>Palla Sivasai</span>
+    </div>
+    <a class="back" href="index.html">Back to Home</a>
+  </div>
+
+  <main class="section">
+    <div class="hero fade-up">
+      <h1 class="title">Contact Us</h1>
+      <p class="subtitle">
+        <span class="dash">--</span> My Profiles <span class="dash">--</span>
+      </p>
+      
+    </div>
+
+    
+    <div class="grid">
+      <a class="card" href="mailto:imsivasai01@gmail.com">
+        <div class="icon"><i class="fa fa-envelope"></i></div>
+        <div class="text">
+          <h3>Email</h3>
+          <p>imsivasai01@gmail.com</p>
+        </div>
+      </a>
+
+      <a class="card" href="tel:9703288210">
+        <div class="icon"><i class="fa fa-phone"></i></div>
+        <div class="text">
+          <h3>Phone</h3>
+          <p>+91 9703288210</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://pallasivasai.github.io/" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-globe"></i></div>
+        <div class="text">
+          <h3>Portfolio</h3>
+          <p>Portfolio</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://www.linkedin.com/in/siva-sai01/" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-linkedin"></i></div>
+        <div class="text">
+          <h3>LinkedIn</h3>
+          <p>LinkedIn</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://github.com/pallasivasai" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-github"></i></div>
+        <div class="text">
+          <h3>GitHub</h3>
+          <p>GitHub</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://www.coursera.org/user/8060386efadd322754c7edd16383b43d" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-graduation-cap"></i></div>
+        <div class="text">
+          <h3>Coursera</h3>
+          <p>Coursera</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://www.cloudskillsboost.google/public_profiles/79b60659-bb15-42dd-852a-9ba427a0158c" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-google"></i></div>
+        <div class="text">
+          <h3>Google Cloud Skills Boost (GCP)</h3>
+          <p>Google Cloud Skills Boost (GCP)</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://trailblazer.me/id/pssai" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-cloud"></i></div>
+        <div class="text">
+          <h3>Salesforce Trailblazer</h3>
+          <p>Salesforce Trailblazer</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://tryhackme.com/p/psivasai" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-shield"></i></div>
+        <div class="text">
+          <h3>TryHackMe</h3>
+          <p>TryHackMe</p>
+        </div>
+      </a>
+
+      <a class="card" href="https://www.hackerrank.com/profile/Psivasai" target="_blank" rel="noopener">
+        <div class="icon"><i class="fa fa-code"></i></div>
+        <div class="text">
+          <h3>HackerRank</h3>
+          <p>HackerRank</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer">
+      <p>
+        Want to reach me directly?
+        <a href="mailto:imsivasai01@gmail.com">imsivasai01@gmail.com</a>
+      </p>
+    </div>
+  </main>
+</body>
+</html>
