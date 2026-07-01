@@ -3,6 +3,7 @@
 Welcome to my portfolio repository! I'm an aspiring **SQL Developer** actively seeking **entry-level opportunities** in database management and data analysis.
 
 ## 🎯 Career Objective
+
 I am passionate about working with data and am actively seeking an **entry-level SQL Developer position** where I can apply my database skills, contribute to data-driven decision making, and grow as a professional in the field of data management.
 
 ## 💼 About Me
