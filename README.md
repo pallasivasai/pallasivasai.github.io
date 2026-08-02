@@ -1,6 +1,7 @@
 # Hi there! 👋 I'm Palla Sivasai
 
 
+
 Welcome to my portfolio repository! I'm an aspiring **SQL Developer** actively seeking **entry-level opportunities** in database management and data analysis.
 
 ## 🎯 Career Objective
