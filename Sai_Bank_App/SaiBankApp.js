@@ -1,0 +1,38 @@
+(() => {
+  const app = document.getElementById('app');
+  const screens = {
+    home: `
+      <div class="balance-card"><div class="muted">Available Balance</div><div class="balance">₹1,25,480.00</div><div class="account">•••• 4821</div></div>
+      <div class="section-title">Quick Actions</div>
+      <div class="actions"><button data-screen="transfer">↗<span>Transfer</span></button><button data-screen="history">↔<span>Transactions</span></button><button data-screen="profile">◉<span>Profile</span></button></div>
+      <div class="section-title">Recent Activity</div>
+      <div class="transaction"><span>Groceries</span><strong>- ₹1,240</strong></div>
+      <div class="transaction"><span>Salary Credit</span><strong class="credit">+ ₹45,000</strong></div>
+      <div class="transaction"><span>Electricity Bill</span><strong>- ₹2,100</strong></div>`,
+    transfer: `
+      <div class="back" data-screen="home">‹ Back</div><div class="section-title">Send Money</div>
+      <label>Recipient Account</label><input id="recipient" placeholder="Enter account number" />
+      <label>Amount</label><input id="amount" type="number" placeholder="₹ 0.00" />
+      <button class="primary" id="sendBtn">Send Money</button><div id="message" class="message"></div>`,
+    history: `
+      <div class="back" data-screen="home">‹ Back</div><div class="section-title">Transactions</div>
+      <div class="transaction"><span>Groceries<br><small>Today</small></span><strong>- ₹1,240</strong></div>
+      <div class="transaction"><span>Salary Credit<br><small>Yesterday</small></span><strong class="credit">+ ₹45,000</strong></div>
+      <div class="transaction"><span>Electricity Bill<br><small>12 Sep</small></span><strong>- ₹2,100</strong></div>`,
+    profile: `
+      <div class="back" data-screen="home">‹ Back</div><div class="profile"><div class="avatar">SS</div><h2>Siva Sai</h2><p class="muted">Premium Banking</p></div>
+      <div class="profile-row">Account Security <span>›</span></div><div class="profile-row">Notifications <span>›</span></div><div class="profile-row">Settings <span>›</span></div>`
+  };
+  function showScreen(screen) {
+    app.innerHTML = screens[screen] || screens.home;
+    app.querySelectorAll('[data-screen]').forEach(node => node.addEventListener('click', e => { e.preventDefault(); showScreen(node.dataset.screen || 'home'); }));
+    const send = app.querySelector('#sendBtn');
+    if (send) send.addEventListener('click', () => {
+      const amount = app.querySelector('#amount')?.value || '';
+      const message = app.querySelector('#message');
+      if (message) message.textContent = amount ? `Transfer request created for ₹${amount}` : 'Enter an amount to continue';
+    });
+  }
+  showScreen('home');
+  document.title = 'Sai Bank App';
+})();
