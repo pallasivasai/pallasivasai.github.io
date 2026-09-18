@@ -235,15 +235,15 @@ button { -webkit-tap-highlight-color: transparent; }
 <div class="app" id="app">
   <header class="topbar">
     <div class="brand">
-      <h1>SAI Voice OS</h1>
-      <p>Voice-first accessibility OS</p>
+      <h1>SAI Voice OS 🇮🇳</h1>
+      <p>India-first • తెలుగు + English • Voice-first accessibility OS</p>
     </div>
     <div style="display:flex;align-items:center;gap:7px"><select id="languageSelect" aria-label="Voice language" style="background:#111A2D;color:#F5F7FB;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 8px;font-size:11px"><option value="te-IN">తెలుగు</option><option value="en-IN">English (India)</option><option value="en-US">English (US)</option></select><div class="status"><span class="dot"></span><span id="statusText">READY</span></div></div>
   </header>
 
   <section class="hero">
-    <h2>Your voice is your interface.</h2>
-    <p>Voice commands can route to computer controls, web actions, documents and accessibility tools.</p>
+    <h2>మీ మాటే మీ interface.</h2>
+    <p>తెలుగులో లేదా English (India) లో మాట్లాడండి. Web answers, documents, computer controls and accessibility tools కోసం voice commands ఉపయోగించండి.</p>
   </section>
 
   <div class="mic-wrap">
@@ -275,8 +275,8 @@ button { -webkit-tap-highlight-color: transparent; }
   </section>
 
   <div class="console" id="console">
-    <div class="ok">SAI ready.</div>
-    <div>Voice engine: browser speech recognition when supported.</div>
+    <div class="ok">SAI ready • India-first 🇮🇳</div>
+    <div>Voice: Telugu (te-IN) / English (India) (en-IN). Browser speech recognition + internet answers.</div>
   </div>
 
   <div class="panel" id="panel">
@@ -457,7 +457,7 @@ button { -webkit-tap-highlight-color: transparent; }
     }
 
     let response = 'I heard: ' + raw + '. A local command bridge can execute this through the SAI agent.';
-    if (text.includes('calculator') || /\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text)) {
+    if (text.includes('calculator') || /\b(plus|minus|times|multiplied|divided|divide|calculate)\b/.test(text)) {
       response = 'Calculator command recognized.';
     } else if (text.includes('github')) {
       response = 'GitHub command recognized.';
