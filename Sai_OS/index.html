@@ -451,70 +451,132 @@ button { -webkit-tap-highlight-color: transparent; }
     }
   }
 
+  async function answerFromInternet(query) {
+    status.textContent = 'SEARCHING WEB';
+    state.textContent = 'SEARCHING INTERNET…';
+    log('Searching the internet for: ' + query);
+
+    try {
+      const searchUrl =
+        'https://en.wikipedia.org/w/rest.php/v1/search/page?q=' +
+        encodeURIComponent(query) + '&limit=3';
+
+      const searchResponse = await fetch(searchUrl, {
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!searchResponse.ok) throw new Error('Internet search failed');
+      const searchData = await searchResponse.json();
+      const first = searchData.pages && searchData.pages[0];
+
+      if (!first || !first.key) {
+        const fallback =
+          'I could not find a reliable answer online. You can search the web for ' + query + '.';
+        transcript.textContent = fallback;
+        log(fallback, 'warn');
+        speak(fallback);
+        window.open(
+          'https://www.google.com/search?q=' + encodeURIComponent(query),
+          '_blank',
+          'noopener,noreferrer'
+        );
+        return;
+      }
+
+      const title = first.title || first.key;
+      const summaryUrl =
+        'https://en.wikipedia.org/api/rest_v1/page/summary/' +
+        encodeURIComponent(first.key.replace(/ /g, '_'));
+
+      const summaryResponse = await fetch(summaryUrl, {
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!summaryResponse.ok) throw new Error('Answer retrieval failed');
+      const data = await summaryResponse.json();
+
+      const answer =
+        data.extract ||
+        first.description ||
+        first.excerpt ||
+        'I found an internet result, but there was no readable summary.';
+
+      transcript.textContent = answer;
+      log('Internet answer — ' + title + ': ' + answer, 'ok');
+      speak(answer);
+
+      if (data.content_urls && data.content_urls.desktop && data.content_urls.desktop.page) {
+        const source = document.createElement('div');
+        source.className = 'ok';
+        source.textContent = 'Source: ' + data.content_urls.desktop.page;
+        consoleBox.prepend(source);
+      }
+    } catch (error) {
+      const message =
+        'I could not reach the internet answer service right now. I will open a web search instead.';
+      transcript.textContent = message;
+      log(message, 'warn');
+      speak(message);
+      window.open(
+        'https://www.google.com/search?q=' + encodeURIComponent(query),
+        '_blank',
+        'noopener,noreferrer'
+      );
+    } finally {
+      status.textContent = 'READY';
+      state.textContent = 'TAP MIC TO SPEAK';
+    }
+  }
+
   function handleCommand(raw) {
     const text = raw.toLowerCase();
 
-    // Natural-language questions go to the internet first.
-    // Supports Telugu + English (India) voice commands.
-    const looksLikeQuestion =
-      text.includes('?') ||
-      /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw) ||
-      /(ఏంటి|ఎవరు|ఎప్పుడు|ఎక్కడ|ఎందుకు|ఎలా|ఏమిటి|చెప్పు|వెతుకు|తాజా|వార్తలు|ఎంత|ఎన్ని|ఎవరిది|ఎవరు)/.test(raw);
-
-    if (looksLikeQuestion || text.includes('search') || text.includes('వెతుకు') || text.includes('చెప్పు')) {
-      internetAnswer(normalizeIndiaQuery(raw));
+    if (
+      text.startsWith('search ') ||
+      text.startsWith('search for ') ||
+      text.includes('what is ') ||
+      text.includes('who is ') ||
+      text.includes('where is ') ||
+      text.includes('when is ') ||
+      text.includes('why is ') ||
+      text.includes('how does ') ||
+      text.includes('tell me about ')
+    ) {
+      answerFromInternet(raw);
       return;
     }
 
-    // Non-question commands are local actions. Never pretend the local agent is the answer engine.
-    // If the user asks for information, route it to the web-answer engine above.
-    let response = '';
-    if (text.includes('calculator') || /\b(plus|minus|times|multiplied|divided|divide|calculate)\b/.test(text)) {
-      response = 'Calculator command recognized.';
-    } else if (text.includes('github')) {
-      response = 'GitHub command recognized.';
-    } else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) {
-      response = 'Document command recognized.';
-    } else if (text.includes('open youtube')) {
-      response = 'YouTube command recognized.';
-    } else if (text.includes('screenshot')) {
-      response = 'Screenshot command recognized.';
-    } else {
-      // Treat ordinary spoken sentences/questions as web questions too.
-      internetAnswer(normalizeIndiaQuery(raw));
-      return;
-    }
-
-    if (response) {
+    if (text.includes('calculator') || /\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text)) {
+      const response = 'Calculator command recognized.';
       log(response, 'ok');
       speak(response);
+    } else if (text.includes('github')) {
+      const response = 'GitHub command recognized.';
+      log(response, 'ok');
+      speak(response);
+    } else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) {
+      const response = 'Document command recognized.';
+      log(response, 'ok');
+      speak(response);
+    } else if (text.includes('open youtube')) {
+      const response = 'Opening YouTube.';
+      log(response, 'ok');
+      speak(response);
+      window.open('https://www.youtube.com/', '_blank', 'noopener,noreferrer');
+    } else if (text.includes('screenshot')) {
+      const response = 'Screenshot command recognized.';
+      log(response, 'ok');
+      speak(response);
+    } else if (text.includes('search')) {
+      answerFromInternet(raw);
+      return;
+    } else {
+      answerFromInternet(raw);
+      return;
     }
+
     status.textContent = 'READY';
-  }
-
-  function updateVoiceLanguage() {
-    if (!languageSelect) return;
-    const lang = languageSelect.value;
-    if (recognition) recognition.lang = lang;
-    const label = lang === 'te-IN' ? 'తెలుగు' : (lang === 'en-IN' ? 'English (India)' : 'English (US)');
-    log('Voice language: ' + label, 'ok');
-    transcript.textContent = lang === 'te-IN'
-      ? 'తెలుగులో మాట్లాడండి…'
-      : 'Speak in ' + label + '…';
-  }
-
-  languageSelect?.addEventListener('change', updateVoiceLanguage);
-
-  function speak(text) {
-    if (!('speechSynthesis' in window)) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const lang = languageSelect ? languageSelect.value : 'te-IN';
-    utterance.lang = lang;
-    const voices = speechSynthesis.getVoices();
-    const matching = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase()));
-    if (matching) utterance.voice = matching;
-    speechSynthesis.speak(utterance);
+    state.textContent = 'TAP MIC TO SPEAK';
   }
 
   mic.onclick = () => {
