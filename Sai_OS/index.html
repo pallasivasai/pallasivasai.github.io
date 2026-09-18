@@ -309,13 +309,22 @@ button { -webkit-tap-highlight-color: transparent; }
     consoleBox.prepend(div);
   }
 
+  function speak(text) {
+    if (!('speechSynthesis' in window) || !text) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = languageSelect ? languageSelect.value : 'en-IN';
+    utterance.rate = 0.95;
+    speechSynthesis.speak(utterance);
+  }
+
   const panels = {
-    web: ['Web Access', 'Web search and browser actions can be routed here. The browser UI is ready for a real command bridge.', [['Search', 'Web search bridge'], ['Open site', 'Site opener']]], 
-    docs: ['Documents', 'Document reader actions can be connected here for PDF, TXT and DOCX processing.', [['Read PDF', 'PDF reader'], ['Search document', 'Document search']]],
-    computer: ['Computer Control', 'This web interface can send commands to a local SAI agent when one is connected.', [['Files', 'File manager'], ['Screenshot', 'Screenshot command']]],
-    github: ['GitHub', 'GitHub actions can be connected through an authenticated backend/local agent.', [['List files', 'Repository listing'], ['Read file', 'Repository reader']]],
-    calculator: ['Calculator', 'Speak a calculation and the browser can evaluate basic arithmetic.', [['Demo: 25 × 4', '100']]],
-    accessibility: ['Accessibility', 'Speech recognition, speech synthesis and large touch controls are enabled where the browser supports them.', [['Speak', 'Speech test']]]
+    web: ['Web Access', 'Ask SAI any question. SAI will send the question to live internet sources and return a readable answer.', [['Search Internet', 'Internet search is ready']]],
+    docs: ['Documents', 'Document reader actions are ready to be connected for PDF, TXT and DOCX processing.', [['Read PDF', 'PDF reader']]],
+    computer: ['Computer Control', 'Computer controls require a local SAI agent because a normal browser cannot control the host computer directly.', [['Screenshot', 'Screenshot command']]],
+    github: ['GitHub', 'GitHub operations require authenticated GitHub access through a backend or local agent.', [['Repository', 'GitHub bridge']]],
+    calculator: ['Calculator', 'Basic arithmetic can be calculated directly in the browser.', [['Demo: 25 × 4', '100']]],
+    accessibility: ['Accessibility', 'Voice recognition, speech synthesis, keyboard access and large controls are enabled where the browser supports them.', [['Speak', 'Speech test']]]
   };
 
   function openPanel(key) {
@@ -328,14 +337,14 @@ button { -webkit-tap-highlight-color: transparent; }
       b.className = 'panel-btn';
       b.textContent = label;
       b.onclick = () => {
-        log(response, 'ok');
-        if (key === 'accessibility' && label === 'Speak' && 'speechSynthesis' in window) {
-          speechSynthesis.cancel();
-          speechSynthesis.speak(new SpeechSynthesisUtterance('SAI Voice OS is ready.'));
-        }
-        if (key === 'calculator' && response === '100') {
+        if (key === 'calculator') {
           transcript.textContent = '25 times 4 equals 100';
           speak('25 times 4 equals 100');
+        } else if (key === 'accessibility') {
+          speak('SAI Voice OS is ready.');
+        } else {
+          log(response, 'ok');
+          speak(response);
         }
       };
       panelActions.appendChild(b);
@@ -343,7 +352,9 @@ button { -webkit-tap-highlight-color: transparent; }
     panel.classList.add('open');
   }
 
-  document.querySelectorAll('.card').forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.panel)));
+  document.querySelectorAll('.card').forEach(btn =>
+    btn.addEventListener('click', () => openPanel(btn.dataset.panel))
+  );
   document.getElementById('closePanel').onclick = () => panel.classList.remove('open');
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -351,7 +362,6 @@ button { -webkit-tap-highlight-color: transparent; }
 
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
-    recognition.lang = languageSelect ? languageSelect.value : 'te-IN';
     recognition.continuous = false;
     recognition.interimResults = false;
 
@@ -359,15 +369,14 @@ button { -webkit-tap-highlight-color: transparent; }
       mic.classList.add('listening');
       state.textContent = 'LISTENING…';
       status.textContent = 'LISTENING';
-      transcript.textContent = 'Listening for your command…';
+      transcript.textContent = 'Listening for your question…';
     };
 
     recognition.onresult = (event) => {
-      const text = event.results[0][0].transcript.trim();
-      transcript.textContent = '“' + text + '”';
-      status.textContent = 'PROCESSING';
-      log('Voice: ' + text);
-      handleCommand(text);
+      const query = event.results[0][0].transcript.trim();
+      transcript.textContent = '“' + query + '”';
+      log('Question: ' + query);
+      answerFromInternet(query);
     };
 
     recognition.onerror = (event) => {
@@ -378,103 +387,84 @@ button { -webkit-tap-highlight-color: transparent; }
 
     recognition.onend = () => {
       mic.classList.remove('listening');
-      state.textContent = 'TAP MIC TO SPEAK';
       if (status.textContent === 'LISTENING') status.textContent = 'READY';
+      state.textContent = 'TAP MIC TO SPEAK';
     };
   }
 
-  async function internetAnswer(query) {
-    status.textContent = 'SEARCHING WEB';
-    state.textContent = 'SEARCHING INTERNET…';
-    transcript.textContent = 'Searching the internet for: “' + query + '”';
-    log('Internet search: ' + query);
-
-    try {
-      // Public web search endpoint. No API key is required.
-      const region = /[\u0C00-\u0C7F]/.test(query) ? 'in-en' : 'in-en';
-      const url = 'https://api.duckduckgo.com/?q=' +
-        encodeURIComponent(query) +
-        '&format=json&no_html=1&skip_disambig=1&kl=' + region;
-      const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!response.ok) throw new Error('Web search failed');
-      const data = await response.json();
-
-      let answer = data.AbstractText || '';
-      let source = data.AbstractURL || '';
-      let sourceName = data.AbstractSource || '';
-
-      if (!answer && Array.isArray(data.RelatedTopics)) {
-        const topic = data.RelatedTopics.find(x => x && x.Text);
-        if (topic) {
-          answer = topic.Text;
-          source = topic.FirstURL || '';
-          sourceName = 'DuckDuckGo';
-        }
-      }
-
-      // Wikipedia fallback, using Telugu Wikipedia for Telugu queries.
-      if (!answer) {
-        const hasTelugu = /[\u0C00-\u0C7F]/.test(query);
-        const wikiHost = hasTelugu ? 'te.wikipedia.org' : 'en.wikipedia.org';
-        const cleanQuery = query
-          .replace(/[?!.]+$/, '')
-          .replace(/^(చెప్పు|వెతుకు|search|find)\s+/i, '')
-          .trim()
-          .replace(/\\s+/g, '_');
-        const wikiUrl = 'https://' + wikiHost + '/api/rest_v1/page/summary/' +
-          encodeURIComponent(cleanQuery);
-        const wikiResponse = await fetch(wikiUrl, { headers: { 'Accept': 'application/json' } });
-        if (wikiResponse.ok) {
-          const wiki = await wikiResponse.json();
-          answer = wiki.extract || '';
-          source = wiki.content_urls?.desktop?.page || '';
-          sourceName = hasTelugu ? 'తెలుగు Wikipedia' : 'Wikipedia';
-        }
-      }
-
-      if (!answer) {
-        answer = 'I could not find a direct web answer. Try asking with a more specific question.';
-      }
-
-      transcript.textContent = answer;
-      log(sourceName ? answer + ' — Source: ' + sourceName : answer, answer.startsWith('I could not') ? 'warn' : 'ok');
-      if (source) log('Source: ' + source, 'ok');
-      speak(answer);
-    } catch (error) {
-      const message = 'I could not reach the internet search service. Please check your connection and try again.';
-      transcript.textContent = message;
-      log(message, 'err');
-      speak(message);
-    } finally {
-      status.textContent = 'READY';
-      state.textContent = 'TAP MIC TO SPEAK';
-    }
+  if (languageSelect) {
+    languageSelect.addEventListener('change', () => {
+      if (recognition) recognition.lang = languageSelect.value;
+      log('Voice language: ' + languageSelect.options[languageSelect.selectedIndex].text, 'ok');
+    });
   }
 
   async function answerFromInternet(query) {
     status.textContent = 'SEARCHING WEB';
     state.textContent = 'SEARCHING INTERNET…';
-    log('Searching the internet for: ' + query);
+    transcript.textContent = 'Searching the internet for: “' + query + '”';
+    log('Searching live internet: ' + query);
 
     try {
-      const searchUrl =
-        'https://en.wikipedia.org/w/rest.php/v1/search/page?q=' +
-        encodeURIComponent(query) + '&limit=3';
+      let answer = '';
+      let source = '';
+      let sourceName = '';
 
-      const searchResponse = await fetch(searchUrl, {
-        headers: { 'Accept': 'application/json' }
-      });
+      // 1. DuckDuckGo instant-answer service.
+      try {
+        const ddgUrl = 'https://api.duckduckgo.com/?q=' +
+          encodeURIComponent(query) +
+          '&format=json&no_html=1&skip_disambig=0&kl=in-en';
+        const r = await fetch(ddgUrl, { headers: { 'Accept': 'application/json' } });
+        if (r.ok) {
+          const data = await r.json();
+          answer = data.AbstractText || '';
+          source = data.AbstractURL || '';
+          sourceName = data.AbstractSource || 'DuckDuckGo';
 
-      if (!searchResponse.ok) throw new Error('Internet search failed');
-      const searchData = await searchResponse.json();
-      const first = searchData.pages && searchData.pages[0];
+          if (!answer && Array.isArray(data.RelatedTopics)) {
+            const topic = data.RelatedTopics.find(x => x && x.Text);
+            if (topic) {
+              answer = topic.Text;
+              source = topic.FirstURL || '';
+              sourceName = 'DuckDuckGo';
+            }
+          }
+        }
+      } catch (_) {}
 
-      if (!first || !first.key) {
-        const fallback =
-          'I could not find a reliable answer online. You can search the web for ' + query + '.';
-        transcript.textContent = fallback;
-        log(fallback, 'warn');
-        speak(fallback);
+      // 2. Wikipedia live search fallback.
+      if (!answer) {
+        const hasTelugu = /[\u0C00-\u0C7F]/.test(query);
+        const host = hasTelugu ? 'te.wikipedia.org' : 'en.wikipedia.org';
+        const searchUrl = 'https://' + host + '/w/rest.php/v1/search/page?q=' +
+          encodeURIComponent(query) + '&limit=5';
+        const r = await fetch(searchUrl, { headers: { 'Accept': 'application/json' } });
+
+        if (r.ok) {
+          const data = await r.json();
+          const first = data.pages && data.pages[0];
+
+          if (first && first.key) {
+            const summaryUrl = 'https://' + host + '/api/rest_v1/page/summary/' +
+              encodeURIComponent(first.key.replace(/ /g, '_'));
+            const sr = await fetch(summaryUrl, { headers: { 'Accept': 'application/json' } });
+
+            if (sr.ok) {
+              const page = await sr.json();
+              answer = page.extract || first.description || '';
+              source = page.content_urls?.desktop?.page || '';
+              sourceName = hasTelugu ? 'Telugu Wikipedia' : 'Wikipedia';
+            }
+          }
+        }
+      }
+
+      if (!answer) {
+        answer = 'I could not get a direct answer from the available internet answer sources. I am opening the live web search results so you can see the current information.';
+        transcript.textContent = answer;
+        log(answer, 'warn');
+        speak(answer);
         window.open(
           'https://www.google.com/search?q=' + encodeURIComponent(query),
           '_blank',
@@ -483,39 +473,14 @@ button { -webkit-tap-highlight-color: transparent; }
         return;
       }
 
-      const title = first.title || first.key;
-      const summaryUrl =
-        'https://en.wikipedia.org/api/rest_v1/page/summary/' +
-        encodeURIComponent(first.key.replace(/ /g, '_'));
-
-      const summaryResponse = await fetch(summaryUrl, {
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (!summaryResponse.ok) throw new Error('Answer retrieval failed');
-      const data = await summaryResponse.json();
-
-      const answer =
-        data.extract ||
-        first.description ||
-        first.excerpt ||
-        'I found an internet result, but there was no readable summary.';
-
       transcript.textContent = answer;
-      log('Internet answer — ' + title + ': ' + answer, 'ok');
+      log('Internet answer: ' + answer, 'ok');
+      if (source) log('Source: ' + sourceName + ' — ' + source, 'ok');
       speak(answer);
-
-      if (data.content_urls && data.content_urls.desktop && data.content_urls.desktop.page) {
-        const source = document.createElement('div');
-        source.className = 'ok';
-        source.textContent = 'Source: ' + data.content_urls.desktop.page;
-        consoleBox.prepend(source);
-      }
     } catch (error) {
-      const message =
-        'I could not reach the internet answer service right now. I will open a web search instead.';
+      const message = 'The internet answer service could not be reached. Opening live web results instead.';
       transcript.textContent = message;
-      log(message, 'warn');
+      log(message, 'err');
       speak(message);
       window.open(
         'https://www.google.com/search?q=' + encodeURIComponent(query),
@@ -528,70 +493,50 @@ button { -webkit-tap-highlight-color: transparent; }
     }
   }
 
-  function handleCommand(raw) {
-    const text = raw.toLowerCase();
+  function handleCommand(query) {
+    const text = query.toLowerCase().trim();
 
-    if (
-      text.startsWith('search ') ||
-      text.startsWith('search for ') ||
-      text.includes('what is ') ||
-      text.includes('who is ') ||
-      text.includes('where is ') ||
-      text.includes('when is ') ||
-      text.includes('why is ') ||
-      text.includes('how does ') ||
-      text.includes('tell me about ')
-    ) {
-      answerFromInternet(raw);
-      return;
-    }
-
-    if (text.includes('calculator') || /\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text)) {
-      const response = 'Calculator command recognized.';
-      log(response, 'ok');
-      speak(response);
-    } else if (text.includes('github')) {
-      const response = 'GitHub command recognized.';
-      log(response, 'ok');
-      speak(response);
-    } else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) {
-      const response = 'Document command recognized.';
-      log(response, 'ok');
-      speak(response);
-    } else if (text.includes('open youtube')) {
-      const response = 'Opening YouTube.';
-      log(response, 'ok');
-      speak(response);
+    if (text === 'open youtube' || text === 'open youtube please') {
+      speak('Opening YouTube.');
       window.open('https://www.youtube.com/', '_blank', 'noopener,noreferrer');
-    } else if (text.includes('screenshot')) {
-      const response = 'Screenshot command recognized.';
-      log(response, 'ok');
-      speak(response);
-    } else if (text.includes('search')) {
-      answerFromInternet(raw);
-      return;
-    } else {
-      answerFromInternet(raw);
       return;
     }
 
-    status.textContent = 'READY';
-    state.textContent = 'TAP MIC TO SPEAK';
+    if (/^(calculate|calculator)\b/.test(text)) {
+      const expression = text.replace(/^(calculate|calculator)\s*/i, '');
+      try {
+        const safe = expression
+          .replace(/×/g, '*')
+          .replace(/÷/g, '/')
+          .replace(/[^0-9+\-*/().%\s]/g, '');
+        if (safe.trim()) {
+          const result = Function('"use strict"; return (' + safe + ')')();
+          const answer = 'The answer is ' + result;
+          transcript.textContent = answer;
+          log(answer, 'ok');
+          speak(answer);
+          return;
+        }
+      } catch (_) {}
+    }
+
+    // Every other spoken request is treated as a question/query and sent to the internet.
+    answerFromInternet(query);
   }
 
   mic.onclick = () => {
     if (!recognition) {
-      log('Speech recognition is not available in this browser.', 'warn');
-      transcript.textContent = 'Browser speech recognition is unavailable.';
+      const message = 'Speech recognition is not available in this browser. Please use Chrome or another browser that supports SpeechRecognition.';
+      transcript.textContent = message;
+      log(message, 'warn');
+      speak(message);
       return;
     }
-    try { recognition.start(); } catch (e) { /* already running */ }
+    recognition.lang = languageSelect ? languageSelect.value : 'en-IN';
+    try {
+      recognition.start();
+    } catch (_) {}
   };
-
-  // India-first web search context: preserve Telugu/Indian wording instead of forcing US English.
-  function normalizeIndiaQuery(raw) {
-    return raw.trim();
-  }
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && !e.repeat) {
@@ -599,6 +544,9 @@ button { -webkit-tap-highlight-color: transparent; }
       mic.click();
     }
   });
+
+  window.SAI_ASK = answerFromInternet;
+  window.SAI_COMMAND = handleCommand;
 })();
 </script>
 </body>
