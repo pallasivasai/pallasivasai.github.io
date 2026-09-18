@@ -37,7 +37,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.14.3"
+          gradle-version: "8.14.4"
 
       - name: Build Kotlin/Wasm
         run: gradle :webApp:wasmJsBrowserDistribution --no-daemon
@@ -48,9 +48,7 @@ jobs:
           rm -rf pages
           mkdir -p pages/Sai_OS
           cp -R Sai_OS/webApp/build/dist/wasmJs/productionExecutable/. pages/Sai_OS/
-          test -f pages/Sai_OS/index.html
-          echo "SAI Voice OS files:"
-          find pages/Sai_OS -maxdepth 2 -type f | sort
+          test -s pages/Sai_OS/index.html
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -66,7 +64,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
