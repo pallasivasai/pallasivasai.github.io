@@ -398,11 +398,11 @@ button { -webkit-tap-highlight-color: transparent; }
   }
 
   function isTimeQuestion(text) {
-    return /\\b(what(?:'s| is)?\\s+(?:the\\s+)?time|time\\s+now|current\\s+time|what time is it|tell me the time)\\b/i.test(text);
+    return /\b(what(?:'s| is)?\s+(?:the\s+)?time|time\s+now|current\s+time|what time is it|tell me the time)\b/i.test(text);
   }
 
   function isWeatherQuestion(text) {
-    return /\\b(weather|temperature|forecast|rain|raining|sunny|cloudy|humidity|wind)\\b/i.test(text);
+    return /\b(weather|temperature|forecast|rain|raining|sunny|cloudy|humidity|wind)\b/i.test(text);
   }
 
   function answerTime() {
