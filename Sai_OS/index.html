@@ -391,9 +391,10 @@ button { -webkit-tap-highlight-color: transparent; }
 
     try {
       // Public web search endpoint. No API key is required.
+      const region = /[\u0C00-\u0C7F]/.test(query) ? 'in-en' : 'in-en';
       const url = 'https://api.duckduckgo.com/?q=' +
         encodeURIComponent(query) +
-        '&format=json&no_html=1&skip_disambig=1';
+        '&format=json&no_html=1&skip_disambig=1&kl=' + region;
       const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
       if (!response.ok) throw new Error('Web search failed');
       const data = await response.json();
@@ -411,16 +412,23 @@ button { -webkit-tap-highlight-color: transparent; }
         }
       }
 
-      // Wikipedia fallback for factual questions when DuckDuckGo has no instant answer.
+      // Wikipedia fallback, using Telugu Wikipedia for Telugu queries.
       if (!answer) {
-        const wikiUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/' +
-          encodeURIComponent(query.replace(/[?!.]+$/, '').trim().replace(/\\s+/g, '_'));
+        const hasTelugu = /[\u0C00-\u0C7F]/.test(query);
+        const wikiHost = hasTelugu ? 'te.wikipedia.org' : 'en.wikipedia.org';
+        const cleanQuery = query
+          .replace(/[?!.]+$/, '')
+          .replace(/^(చెప్పు|వెతుకు|search|find)\s+/i, '')
+          .trim()
+          .replace(/\\s+/g, '_');
+        const wikiUrl = 'https://' + wikiHost + '/api/rest_v1/page/summary/' +
+          encodeURIComponent(cleanQuery);
         const wikiResponse = await fetch(wikiUrl, { headers: { 'Accept': 'application/json' } });
         if (wikiResponse.ok) {
           const wiki = await wikiResponse.json();
           answer = wiki.extract || '';
           source = wiki.content_urls?.desktop?.page || '';
-          sourceName = 'Wikipedia';
+          sourceName = hasTelugu ? 'తెలుగు Wikipedia' : 'Wikipedia';
         }
       }
 
@@ -447,11 +455,13 @@ button { -webkit-tap-highlight-color: transparent; }
     const text = raw.toLowerCase();
 
     // Natural-language questions go to the internet first.
+    // Supports Telugu + English (India) voice commands.
     const looksLikeQuestion =
       text.includes('?') ||
-      /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw);
+      /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw) ||
+      /(ఏంటి|ఎవరు|ఎప్పుడు|ఎక్కడ|ఎందుకు|ఎలా|ఏమిటి|చెప్పు|వెతుకు|తాజా|వార్తలు|ఎంత|ఎన్ని|ఎవరిది|ఎవరు)/.test(raw);
 
-    if (looksLikeQuestion || text.includes('search')) {
+    if (looksLikeQuestion || text.includes('search') || text.includes('వెతుకు') || text.includes('చెప్పు')) {
       internetAnswer(normalizeIndiaQuery(raw));
       return;
     }
