@@ -389,95 +389,203 @@ button { -webkit-tap-highlight-color: transparent; }
     };
   }
 
-  async function internetAnswer(query) {
-    status.textContent = 'SEARCHING WEB';
-    state.textContent = 'SEARCHING INTERNET…';
-    transcript.textContent = 'Searching the internet for: “' + query + '”';
-    log('Internet search: ' + query);
+  function finishAnswer(answer, sourceName) {
+    transcript.textContent = answer;
+    log(sourceName ? answer + ' — Source: ' + sourceName : answer, 'ok');
+    speak(answer);
+    status.textContent = 'READY';
+    state.textContent = 'TAP MIC TO SPEAK';
+  }
+
+  function isTimeQuestion(text) {
+    return /\b(what(?:'s| is)?\s+(?:the\s+)?time|time\s+now|current\s+time|what time is it|tell me the time)\b/i.test(text);
+  }
+
+  function isWeatherQuestion(text) {
+    return /\b(weather|temperature|forecast|rain|raining|sunny|cloudy|humidity|wind)\b/i.test(text);
+  }
+
+  function answerTime() {
+    const now = new Date();
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata';
+    const time = new Intl.DateTimeFormat('en-IN', {
+      hour: 'numeric',
+      minute: '2-digit',
+      second: 'numeric',
+      hour12: true,
+      timeZone: tz
+    }).format(now);
+    const date = new Intl.DateTimeFormat('en-IN', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: tz
+    }).format(now);
+    finishAnswer('The current time is ' + time + '. Today is ' + date + '.', 'Device clock');
+  }
+
+  async function answerWeather(query) {
+    status.textContent = 'GETTING WEATHER';
+    state.textContent = 'CHECKING WEATHER…';
+    transcript.textContent = 'Getting today’s weather…';
+    log('Weather request: ' + query);
 
     try {
-      // Public web search endpoint. No API key is required.
-      const url = 'https://api.duckduckgo.com/?q=' +
-        encodeURIComponent(query) +
-        '&format=json&no_html=1&skip_disambig=1';
-      const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!response.ok) throw new Error('Web search failed');
-      const data = await response.json();
-
-      let answer = data.AbstractText || '';
-      let source = data.AbstractURL || '';
-      let sourceName = data.AbstractSource || '';
-
-      if (!answer && Array.isArray(data.RelatedTopics)) {
-        const topic = data.RelatedTopics.find(x => x && x.Text);
-        if (topic) {
-          answer = topic.Text;
-          source = topic.FirstURL || '';
-          sourceName = 'DuckDuckGo';
-        }
+      let position;
+      try {
+        position = await new Promise((resolve, reject) => {
+          if (!navigator.geolocation) return reject(new Error('Geolocation unavailable'));
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: false,
+            timeout: 8000,
+            maximumAge: 600000
+          });
+        });
+      } catch (_) {
+        throw new Error('LOCATION_REQUIRED');
       }
 
-      // Wikipedia fallback for factual questions when DuckDuckGo has no instant answer.
-      if (!answer) {
-        const wikiUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/' +
-          encodeURIComponent(query.replace(/[?!.]+$/, '').trim().replace(/\\s+/g, '_'));
-        const wikiResponse = await fetch(wikiUrl, { headers: { 'Accept': 'application/json' } });
-        if (wikiResponse.ok) {
-          const wiki = await wikiResponse.json();
-          answer = wiki.extract || '';
-          source = wiki.content_urls?.desktop?.page || '';
-          sourceName = 'Wikipedia';
-        }
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      const forecastUrl =
+        'https://api.open-meteo.com/v1/forecast?latitude=' + encodeURIComponent(lat) +
+        '&longitude=' + encodeURIComponent(lon) +
+        '&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m' +
+        '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+        '&timezone=auto';
+
+      const weatherResponse = await fetch(forecastUrl);
+      if (!weatherResponse.ok) throw new Error('WEATHER_FAILED');
+      const weather = await weatherResponse.json();
+
+      const codeText = {
+        0: 'clear sky', 1: 'mainly clear', 2: 'partly cloudy', 3: 'overcast',
+        45: 'foggy', 48: 'foggy', 51: 'light drizzle', 53: 'drizzle',
+        55: 'heavy drizzle', 61: 'light rain', 63: 'moderate rain', 65: 'heavy rain',
+        71: 'light snow', 73: 'moderate snow', 75: 'heavy snow',
+        80: 'rain showers', 81: 'moderate rain showers', 82: 'heavy rain showers',
+        95: 'thunderstorms', 96: 'thunderstorms with hail', 99: 'thunderstorms with hail'
+      };
+
+      const current = weather.current || {};
+      const daily = weather.daily || {};
+      const condition = codeText[current.weather_code] || 'mixed conditions';
+      const max = daily.temperature_2m_max?.[0];
+      const min = daily.temperature_2m_min?.[0];
+      const rain = daily.precipitation_probability_max?.[0];
+
+      let answer = 'Today, it is ' + Math.round(current.temperature_2m) +
+        ' degrees Celsius, feels like ' + Math.round(current.apparent_temperature) +
+        ' degrees, with ' + condition + '.';
+      if (max != null && min != null) {
+        answer += ' The high is ' + Math.round(max) + ' and the low is ' + Math.round(min) + ' degrees Celsius.';
+      }
+      if (rain != null) answer += ' The maximum rain probability today is ' + rain + ' percent.';
+      if (current.relative_humidity_2m != null) {
+        answer += ' Humidity is ' + Math.round(current.relative_humidity_2m) + ' percent.';
       }
 
-      if (!answer) {
-        answer = 'I could not find a direct web answer. Try asking with a more specific question.';
-      }
-
-      transcript.textContent = answer;
-      log(sourceName ? answer + ' — Source: ' + sourceName : answer, answer.startsWith('I could not') ? 'warn' : 'ok');
-      if (source) log('Source: ' + source, 'ok');
-      speak(answer);
+      finishAnswer(answer, 'Open-Meteo');
     } catch (error) {
-      const message = 'I could not reach the internet search service. Please check your connection and try again.';
+      const answer = error.message === 'LOCATION_REQUIRED'
+        ? 'I need your browser location permission to give the weather where you are. Please allow location access and ask again, or ask for weather in a specific city.'
+        : 'I could not get the weather right now. Please try again.';
+      transcript.textContent = answer;
+      log(answer, 'warn');
+      speak(answer);
+      status.textContent = 'READY';
+      state.textContent = 'TAP MIC TO SPEAK';
+    }
+  }
+
+  async function internetAnswer(query) {
+    status.textContent = 'ASKING CLAUDE';
+    state.textContent = 'THINKING…';
+    transcript.textContent = 'Getting an answer…';
+    log('Question → Claude: ' + query);
+
+    try {
+      const response = await fetch('https://jgubunffqfyapurxpoih.supabase.co/functions/v1/sai-claude', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': 'public-web-client'
+        },
+        body: JSON.stringify({
+          question: query,
+          language: 'en-IN',
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata'
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.answer) throw new Error(data.error || 'Claude service failed');
+
+      finishAnswer(data.answer, data.source || 'Claude');
+    } catch (error) {
+      const message = 'I could not reach SAI’s answer service right now. Please try again.';
       transcript.textContent = message;
-      log(message, 'err');
+      log(message + ' ' + (error.message || ''), 'err');
       speak(message);
-    } finally {
       status.textContent = 'READY';
       state.textContent = 'TAP MIC TO SPEAK';
     }
   }
 
   function handleCommand(raw) {
-    const text = raw.toLowerCase();
+    const text = raw.toLowerCase().trim();
 
-    // Natural-language questions go to the internet first.
-    const looksLikeQuestion =
-      text.includes('?') ||
-      /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw);
-
-    if (looksLikeQuestion || text.includes('search')) {
-      internetAnswer(raw);
+    // Built-in answers that should work immediately without any AI/API dependency.
+    if (isTimeQuestion(raw)) {
+      answerTime();
       return;
     }
 
-    let response = 'I heard: ' + raw + '. A local command bridge can execute this through the SAI agent.';
-    if (text.includes('calculator') || /\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text)) {
-      response = 'Calculator command recognized.';
-    } else if (text.includes('github')) {
-      response = 'GitHub command recognized.';
-    } else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) {
-      response = 'Document command recognized.';
-    } else if (text.includes('open youtube')) {
-      response = 'YouTube command recognized.';
-    } else if (text.includes('screenshot')) {
-      response = 'Screenshot command recognized.';
+    if (isWeatherQuestion(raw)) {
+      answerWeather(raw);
+      return;
     }
 
-    log(response, 'ok');
-    speak(response);
-    status.textContent = 'READY';
+    if (text.includes('open youtube')) {
+      window.open('https://www.youtube.com/', '_blank', 'noopener');
+      const answer = 'Opening YouTube.';
+      log(answer, 'ok');
+      speak(answer);
+      status.textContent = 'READY';
+      return;
+    }
+
+    if (text.includes('calculator') || /\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text)) {
+      const expression = text
+        .replace(/calculate|what is|equals?|please|can you/gi, '')
+        .replace(/times/gi, '*')
+        .replace(/multiplied by/gi, '*')
+        .replace(/divided by/gi, '/')
+        .replace(/plus/gi, '+')
+        .replace(/minus/gi, '-')
+        .trim();
+
+      if (/^[0-9+*/().%\\s-]+$/.test(expression)) {
+        try {
+          const result = Function('return (' + expression + ')')();
+          if (Number.isFinite(result)) {
+            const answer = expression + ' equals ' + result + '.';
+            transcript.textContent = answer;
+            log(answer, 'ok');
+            speak(answer);
+            status.textContent = 'READY';
+            return;
+          }
+        } catch (_) {}
+      }
+    }
+
+    // Everything else is a natural-language request/question for Claude.
+    // This means "explain...", "tell me...", "who is...", "how do I...",
+    // "latest...", "search for...", etc. all use the same answer path.
+    internetAnswer(raw);
   }
 
   mic.onclick = () => {
