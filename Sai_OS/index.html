@@ -400,98 +400,51 @@ button { -webkit-tap-highlight-color: transparent; }
   }
 
   async function answerFromInternet(query) {
-    status.textContent = 'SEARCHING WEB';
-    state.textContent = 'SEARCHING INTERNET…';
-    transcript.textContent = 'Searching the internet for: “' + query + '”';
-    log('Searching live internet: ' + query);
+    status.textContent = 'ASKING CLAUDE';
+    state.textContent = 'GETTING ANSWER…';
+    transcript.textContent = 'SAI is getting the answer from Claude…';
+    log('Sending question to Claude: ' + query);
 
     try {
-      let answer = '';
-      let source = '';
-      let sourceName = '';
+      /*
+       * IMPORTANT:
+       * The browser must NOT contain an Anthropic API key.
+       * Set ANTHROPIC_API_KEY as a GitHub Actions secret and expose a
+       * secure /api/claude endpoint on your server/backend.
+       *
+       * This UI intentionally calls Claude first and never DuckDuckGo.
+       */
+      const response = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-5',
+          question: query,
+          language: languageSelect ? languageSelect.value : 'en-IN'
+        })
+      });
 
-      // 1. DuckDuckGo instant-answer service.
-      try {
-        const ddgUrl = 'https://api.duckduckgo.com/?q=' +
-          encodeURIComponent(query) +
-          '&format=json&no_html=1&skip_disambig=0&kl=in-en';
-        const r = await fetch(ddgUrl, { headers: { 'Accept': 'application/json' } });
-        if (r.ok) {
-          const data = await r.json();
-          answer = data.AbstractText || '';
-          source = data.AbstractURL || '';
-          sourceName = data.AbstractSource || 'DuckDuckGo';
+      if (!response.ok) throw new Error('Claude API request failed');
+      const data = await response.json();
+      const answer = data.answer || data.content || data.message;
 
-          if (!answer && Array.isArray(data.RelatedTopics)) {
-            const topic = data.RelatedTopics.find(x => x && x.Text);
-            if (topic) {
-              answer = topic.Text;
-              source = topic.FirstURL || '';
-              sourceName = 'DuckDuckGo';
-            }
-          }
-        }
-      } catch (_) {}
-
-      // 2. Wikipedia live search fallback.
-      if (!answer) {
-        const hasTelugu = /[\u0C00-\u0C7F]/.test(query);
-        const host = hasTelugu ? 'te.wikipedia.org' : 'en.wikipedia.org';
-        const searchUrl = 'https://' + host + '/w/rest.php/v1/search/page?q=' +
-          encodeURIComponent(query) + '&limit=5';
-        const r = await fetch(searchUrl, { headers: { 'Accept': 'application/json' } });
-
-        if (r.ok) {
-          const data = await r.json();
-          const first = data.pages && data.pages[0];
-
-          if (first && first.key) {
-            const summaryUrl = 'https://' + host + '/api/rest_v1/page/summary/' +
-              encodeURIComponent(first.key.replace(/ /g, '_'));
-            const sr = await fetch(summaryUrl, { headers: { 'Accept': 'application/json' } });
-
-            if (sr.ok) {
-              const page = await sr.json();
-              answer = page.extract || first.description || '';
-              source = page.content_urls?.desktop?.page || '';
-              sourceName = hasTelugu ? 'Telugu Wikipedia' : 'Wikipedia';
-            }
-          }
-        }
-      }
-
-      if (!answer) {
-        answer = 'I could not get a direct answer from the available internet answer sources. I am opening the live web search results so you can see the current information.';
-        transcript.textContent = answer;
-        log(answer, 'warn');
-        speak(answer);
-        window.open(
-          'https://www.google.com/search?q=' + encodeURIComponent(query),
-          '_blank',
-          'noopener,noreferrer'
-        );
-        return;
-      }
+      if (!answer) throw new Error('Claude returned no answer');
 
       transcript.textContent = answer;
-      log('Internet answer: ' + answer, 'ok');
-      if (source) log('Source: ' + sourceName + ' — ' + source, 'ok');
+      log('Claude answer: ' + answer, 'ok');
+      if (data.source) log('Source: ' + data.source, 'ok');
       speak(answer);
     } catch (error) {
-      const message = 'The internet answer service could not be reached. Opening live web results instead.';
+      const message = 'Claude could not be reached right now. Please check the SAI Claude backend connection.';
       transcript.textContent = message;
       log(message, 'err');
       speak(message);
-      window.open(
-        'https://www.google.com/search?q=' + encodeURIComponent(query),
-        '_blank',
-        'noopener,noreferrer'
-      );
     } finally {
       status.textContent = 'READY';
       state.textContent = 'TAP MIC TO SPEAK';
     }
   }
+
 
   function handleCommand(query) {
     const text = query.toLowerCase().trim();
