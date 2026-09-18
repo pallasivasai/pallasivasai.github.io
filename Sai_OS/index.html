@@ -389,10 +389,81 @@ button { -webkit-tap-highlight-color: transparent; }
     };
   }
 
+  async function internetAnswer(query) {
+    status.textContent = 'SEARCHING WEB';
+    state.textContent = 'SEARCHING INTERNET…';
+    transcript.textContent = 'Searching the internet for: “' + query + '”';
+    log('Internet search: ' + query);
+
+    try {
+      // Public web search endpoint. No API key is required.
+      const url = 'https://api.duckduckgo.com/?q=' +
+        encodeURIComponent(query) +
+        '&format=json&no_html=1&skip_disambig=1';
+      const response = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!response.ok) throw new Error('Web search failed');
+      const data = await response.json();
+
+      let answer = data.AbstractText || '';
+      let source = data.AbstractURL || '';
+      let sourceName = data.AbstractSource || '';
+
+      if (!answer && Array.isArray(data.RelatedTopics)) {
+        const topic = data.RelatedTopics.find(x => x && x.Text);
+        if (topic) {
+          answer = topic.Text;
+          source = topic.FirstURL || '';
+          sourceName = 'DuckDuckGo';
+        }
+      }
+
+      // Wikipedia fallback for factual questions when DuckDuckGo has no instant answer.
+      if (!answer) {
+        const wikiUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/' +
+          encodeURIComponent(query.replace(/[?!.]+$/, '').trim().replace(/\\s+/g, '_'));
+        const wikiResponse = await fetch(wikiUrl, { headers: { 'Accept': 'application/json' } });
+        if (wikiResponse.ok) {
+          const wiki = await wikiResponse.json();
+          answer = wiki.extract || '';
+          source = wiki.content_urls?.desktop?.page || '';
+          sourceName = 'Wikipedia';
+        }
+      }
+
+      if (!answer) {
+        answer = 'I could not find a direct web answer. Try asking with a more specific question.';
+      }
+
+      transcript.textContent = answer;
+      log(sourceName ? answer + ' — Source: ' + sourceName : answer, answer.startsWith('I could not') ? 'warn' : 'ok');
+      if (source) log('Source: ' + source, 'ok');
+      speak(answer);
+    } catch (error) {
+      const message = 'I could not reach the internet search service. Please check your connection and try again.';
+      transcript.textContent = message;
+      log(message, 'err');
+      speak(message);
+    } finally {
+      status.textContent = 'READY';
+      state.textContent = 'TAP MIC TO SPEAK';
+    }
+  }
+
   function handleCommand(raw) {
     const text = raw.toLowerCase();
-    let response = 'I heard: ' + raw + '. A command bridge can execute this through the SAI local agent or backend.';
-    if (text.includes('calculator') || /\b(plus|minus|times|multiplied|divided|divide|calculate)\b/.test(text)) {
+
+    // Natural-language questions go to the internet first.
+    const looksLikeQuestion =
+      text.includes('?') ||
+      /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw);
+
+    if (looksLikeQuestion || text.includes('search')) {
+      internetAnswer(raw);
+      return;
+    }
+
+    let response = 'I heard: ' + raw + '. A local command bridge can execute this through the SAI agent.';
+    if (text.includes('calculator') || /\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text)) {
       response = 'Calculator command recognized.';
     } else if (text.includes('github')) {
       response = 'GitHub command recognized.';
@@ -402,9 +473,8 @@ button { -webkit-tap-highlight-color: transparent; }
       response = 'YouTube command recognized.';
     } else if (text.includes('screenshot')) {
       response = 'Screenshot command recognized.';
-    } else if (text.includes('search')) {
-      response = 'Web search command recognized.';
     }
+
     log(response, 'ok');
     speak(response);
     status.textContent = 'READY';
