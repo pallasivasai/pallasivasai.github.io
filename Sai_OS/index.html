@@ -1,26 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#070B14">
-    <meta name="description" content="SAI Voice OS - Voice-first computing">
-    <title>SAI Voice OS</title>
-    <style>
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: #070B14;
-        }
-        body { min-height: 100dvh; }
-        #webApp { width: 100%; height: 100%; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#070B14">
+<meta name="description" content="SAI Voice OS — voice-first accessibility operating system">
+<title>SAI Voice OS</title>
+<style>
+:root {
+  --bg: #070B14;
+  --panel: #0D1322;
+  --panel-2: #111A2D;
+  --text: #F5F7FB;
+  --muted: #8C98AE;
+  --accent: #6EE7F9;
+  --accent-2: #A78BFA;
+  --danger: #FB7185;
+  --success: #34D399;
+  --line: rgba(255,255,255,.08);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+button, input { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+
+.app {
+  width: min(100%, 430px);
+  height: min(100dvh, 900px);
+  background:
+    radial-gradient(circle at 50% -10%, rgba(110,231,249,.13), transparent 34%),
+    var(--bg);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,.06);
+  box-shadow: 0 24px 80px rgba(0,0,0,.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 12px;
+}
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.brand h1 {
+  font-size: 19px;
+  margin: 0;
+  letter-spacing: .3px;
+}
+.brand p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(255,255,255,.025);
+}
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 12px rgba(52,211,153,.7);
+}
+
+.hero {
+  padding: 18px 20px 12px;
+  text-align: center;
+}
+.hero h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  letter-spacing: -.6px;
+}
+.hero p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mic-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 16px;
+}
+.mic {
+  width: 112px;
+  height: 112px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #041019;
+  background: linear-gradient(145deg, #A5F3FC, var(--accent));
+  box-shadow:
+    0 0 0 12px rgba(110,231,249,.06),
+    0 0 60px rgba(110,231,249,.17);
+  font-size: 42px;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.mic:active { transform: scale(.96); }
+.mic.listening {
+  animation: pulse 1.25s infinite;
+  box-shadow:
+    0 0 0 12px rgba(110,231,249,.10),
+    0 0 0 22px rgba(110,231,249,.035),
+    0 0 70px rgba(110,231,249,.25);
+}
+@keyframes pulse {
+  50% { transform: scale(1.04); }
+}
+
+.listen-state {
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+}
+.transcript {
+  min-height: 38px;
+  margin: 7px 20px 14px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 0 14px;
+  overflow: auto;
+}
+.card {
+  background: linear-gradient(180deg, rgba(17,26,45,.98), rgba(13,19,34,.98));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 15px;
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+  min-height: 92px;
+}
+.card:hover { border-color: rgba(110,231,249,.22); }
+.icon { font-size: 22px; }
+.card strong { display:block; margin-top: 9px; font-size: 13px; }
+.card span { display:block; margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+
+.console {
+  margin: 12px 14px 10px;
+  background: #090F1B;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  font-size: 11px;
+  color: #B6C0D4;
+  min-height: 62px;
+  max-height: 110px;
+  overflow: auto;
+}
+.console .ok { color: var(--success); }
+.console .warn { color: #FBBF24; }
+.console .err { color: var(--danger); }
+
+.bottom {
+  margin-top: auto;
+  padding: 10px 16px 14px;
+  color: #657189;
+  font-size: 10px;
+  text-align: center;
+  letter-spacing: .4px;
+}
+
+.panel {
+  position: absolute;
+  inset: auto 12px 74px 12px;
+  background: rgba(8,13,24,.97);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 16px;
+  display: none;
+  z-index: 5;
+  backdrop-filter: blur(18px);
+}
+.panel.open { display: block; }
+.panel h3 { margin: 0 0 9px; font-size: 16px; }
+.panel p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.panel-row { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.panel-btn {
+  border:1px solid var(--line);
+  background:var(--panel-2);
+  color:var(--text);
+  padding:9px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:11px;
+}
+.close { margin-left:auto; float:right; }
+
+@media (min-width: 700px) {
+  .app { border-radius: 34px; }
+}
+</style>
 </head>
 <body>
-    <div id="webApp"></div>
-    <!-- Kotlin/Wasm generated scripts are copied into this same directory by the Pages build. -->
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="brand">
+      <h1>SAI Voice OS</h1>
+      <p>Voice-first accessibility OS</p>
+    </div>
+    <div class="status"><span class="dot"></span><span id="statusText">READY</span></div>
+  </header>
+
+  <section class="hero">
+    <h2>Your voice is your interface.</h2>
+    <p>Voice commands can route to computer controls, web actions, documents and accessibility tools.</p>
+  </section>
+
+  <div class="mic-wrap">
+    <button class="mic" id="micBtn" aria-label="Start voice command">🎙️</button>
+  </div>
+
+  <div class="listen-state" id="listenState">TAP MIC TO SPEAK</div>
+  <div class="transcript" id="transcript">Waiting for a voice command…</div>
+
+  <section class="quick-grid" aria-label="SAI capabilities">
+    <button class="card" data-panel="web">
+      <div class="icon">🌐</div><strong>Web</strong><span>Search, websites, online answers</span>
+    </button>
+    <button class="card" data-panel="docs">
+      <div class="icon">📄</div><strong>Documents</strong><span>Read and search PDF, TXT, DOCX</span>
+    </button>
+    <button class="card" data-panel="computer">
+      <div class="icon">💻</div><strong>Computer</strong><span>Apps, files, screenshots and controls</span>
+    </button>
+    <button class="card" data-panel="github">
+      <div class="icon">🐙</div><strong>GitHub</strong><span>List, read, upload and push files</span>
+    </button>
+    <button class="card" data-panel="calculator">
+      <div class="icon">🧮</div><strong>Calculator</strong><span>Speak calculations naturally</span>
+    </button>
+    <button class="card" data-panel="accessibility">
+      <div class="icon">♿</div><strong>Accessibility</strong><span>Speech, focus and assistive controls</span>
+    </button>
+  </section>
+
+  <div class="console" id="console">
+    <div class="ok">SAI ready.</div>
+    <div>Voice engine: browser speech recognition when supported.</div>
+  </div>
+
+  <div class="panel" id="panel">
+    <button class="panel-btn close" id="closePanel">Close</button>
+    <h3 id="panelTitle">SAI</h3>
+    <p id="panelText"></p>
+    <div class="panel-row" id="panelActions"></div>
+  </div>
+
+  <footer class="bottom">SAI VOICE OS • WEB INTERFACE • KOTLIN/WASM READY</footer>
+</div>
+
+<script>
+(function () {
+  const mic = document.getElementById('micBtn');
+  const state = document.getElementById('listenState');
+  const transcript = document.getElementById('transcript');
+  const status = document.getElementById('statusText');
+  const consoleBox = document.getElementById('console');
+  const panel = document.getElementById('panel');
+  const panelTitle = document.getElementById('panelTitle');
+  const panelText = document.getElementById('panelText');
+  const panelActions = document.getElementById('panelActions');
+
+  function log(message, cls) {
+    const div = document.createElement('div');
+    if (cls) div.className = cls;
+    div.textContent = message;
+    consoleBox.prepend(div);
+  }
+
+  const panels = {
+    web: ['Web Access', 'Web search and browser actions can be routed here. The browser UI is ready for a real command bridge.', [['Search', 'Web search bridge'], ['Open site', 'Site opener']]], 
+    docs: ['Documents', 'Document reader actions can be connected here for PDF, TXT and DOCX processing.', [['Read PDF', 'PDF reader'], ['Search document', 'Document search']]],
+    computer: ['Computer Control', 'This web interface can send commands to a local SAI agent when one is connected.', [['Files', 'File manager'], ['Screenshot', 'Screenshot command']]],
+    github: ['GitHub', 'GitHub actions can be connected through an authenticated backend/local agent.', [['List files', 'Repository listing'], ['Read file', 'Repository reader']]],
+    calculator: ['Calculator', 'Speak a calculation and the browser can evaluate basic arithmetic.', [['Demo: 25 × 4', '100']]],
+    accessibility: ['Accessibility', 'Speech recognition, speech synthesis and large touch controls are enabled where the browser supports them.', [['Speak', 'Speech test']]]
+  };
+
+  function openPanel(key) {
+    const p = panels[key] || ['SAI', ''];
+    panelTitle.textContent = p[0];
+    panelText.textContent = p[1];
+    panelActions.innerHTML = '';
+    p[2].forEach(([label, response]) => {
+      const b = document.createElement('button');
+      b.className = 'panel-btn';
+      b.textContent = label;
+      b.onclick = () => {
+        log(response, 'ok');
+        if (key === 'accessibility' && label === 'Speak' && 'speechSynthesis' in window) {
+          speechSynthesis.cancel();
+          speechSynthesis.speak(new SpeechSynthesisUtterance('SAI Voice OS is ready.'));
+        }
+        if (key === 'calculator' && response === '100') {
+          transcript.textContent = '25 times 4 equals 100';
+          speak('25 times 4 equals 100');
+        }
+      };
+      panelActions.appendChild(b);
+    });
+    panel.classList.add('open');
+  }
+
+  document.querySelectorAll('.card').forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.panel)));
+  document.getElementById('closePanel').onclick = () => panel.classList.remove('open');
+
+  function speak(text) {
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+    }
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+
+  if (SpeechRecognition) {
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      mic.classList.add('listening');
+      state.textContent = 'LISTENING…';
+      status.textContent = 'LISTENING';
+      transcript.textContent = 'Listening for your command…';
+    };
+
+    recognition.onresult = (event) => {
+      const text = event.results[0][0].transcript.trim();
+      transcript.textContent = '“' + text + '”';
+      status.textContent = 'PROCESSING';
+      log('Voice: ' + text);
+      handleCommand(text);
+    };
+
+    recognition.onerror = (event) => {
+      log('Voice error: ' + event.error, 'err');
+      state.textContent = 'TAP MIC TO SPEAK';
+      status.textContent = 'READY';
+    };
+
+    recognition.onend = () => {
+      mic.classList.remove('listening');
+      state.textContent = 'TAP MIC TO SPEAK';
+      if (status.textContent === 'LISTENING') status.textContent = 'READY';
+    };
+  }
+
+  function handleCommand(raw) {
+    const text = raw.toLowerCase();
+    let response = 'I heard: ' + raw + '. A command bridge can execute this through the SAI local agent or backend.';
+    if (text.includes('calculator') || /\b(plus|minus|times|multiplied|divided|divide|calculate)\b/.test(text)) {
+      response = 'Calculator command recognized.';
+    } else if (text.includes('github')) {
+      response = 'GitHub command recognized.';
+    } else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) {
+      response = 'Document command recognized.';
+    } else if (text.includes('open youtube')) {
+      response = 'YouTube command recognized.';
+    } else if (text.includes('screenshot')) {
+      response = 'Screenshot command recognized.';
+    } else if (text.includes('search')) {
+      response = 'Web search command recognized.';
+    }
+    log(response, 'ok');
+    speak(response);
+    status.textContent = 'READY';
+  }
+
+  mic.onclick = () => {
+    if (!recognition) {
+      log('Speech recognition is not available in this browser.', 'warn');
+      transcript.textContent = 'Browser speech recognition is unavailable.';
+      return;
+    }
+    try { recognition.start(); } catch (e) { /* already running */ }
+  };
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && !e.repeat) {
+      e.preventDefault();
+      mic.click();
+    }
+  });
+})();
+</script>
 </body>
 </html>
