@@ -466,7 +466,9 @@ button { -webkit-tap-highlight-color: transparent; }
       return;
     }
 
-    let response = 'I heard: ' + raw + '. A local command bridge can execute this through the SAI agent.';
+    // Non-question commands are local actions. Never pretend the local agent is the answer engine.
+    // If the user asks for information, route it to the web-answer engine above.
+    let response = '';
     if (text.includes('calculator') || /\b(plus|minus|times|multiplied|divided|divide|calculate)\b/.test(text)) {
       response = 'Calculator command recognized.';
     } else if (text.includes('github')) {
@@ -477,10 +479,16 @@ button { -webkit-tap-highlight-color: transparent; }
       response = 'YouTube command recognized.';
     } else if (text.includes('screenshot')) {
       response = 'Screenshot command recognized.';
+    } else {
+      // Treat ordinary spoken sentences/questions as web questions too.
+      internetAnswer(normalizeIndiaQuery(raw));
+      return;
     }
 
-    log(response, 'ok');
-    speak(response);
+    if (response) {
+      log(response, 'ok');
+      speak(response);
+    }
     status.textContent = 'READY';
   }
 
