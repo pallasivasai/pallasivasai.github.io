@@ -328,13 +328,27 @@ button { -webkit-tap-highlight-color: transparent; }
   }
 
   const panels = {
-    web: ['Web Access', 'Web search and browser actions can be routed here. The browser UI is ready for a real command bridge.', [['Search', 'Web search bridge'], ['Open site', 'Site opener']]], 
-    docs: ['Documents', 'Document reader actions can be connected here for PDF, TXT and DOCX processing.', [['Read PDF', 'PDF reader'], ['Search document', 'Document search']]],
-    computer: ['Computer Control', 'This web interface can send commands to a local SAI agent when one is connected.', [['Files', 'File manager'], ['Screenshot', 'Screenshot command']]],
-    github: ['GitHub', 'GitHub actions can be connected through an authenticated backend/local agent.', [['List files', 'Repository listing'], ['Read file', 'Repository reader']]],
-    calculator: ['Calculator', 'Speak a calculation and the browser can evaluate basic arithmetic.', [['Demo: 25 × 4', '100']]],
-    accessibility: ['Accessibility', 'Speech recognition, speech synthesis and large touch controls are enabled where the browser supports them.', [['Speak', 'Speech test']]]
+    web: ['Web Access', 'Ask SAI any question. SAI sends it to the secure Claude backend and speaks the answer.', [['Ask Claude', 'Claude answers every question first.']]],
+    docs: ['Documents', 'Document reader actions can be connected here for PDF, TXT and DOCX processing.', [['Read PDF', 'PDF reader']]],
+    computer: ['Computer Control', 'This web interface can send commands to a local SAI agent when one is connected.', [['Screenshot', 'Screenshot command']]],
+    github: ['GitHub', 'GitHub actions can be connected through an authenticated backend/local agent.', [['List files', 'Repository listing']]],
+    calculator: ['Calculator', 'Speak a calculation and SAI can return the result.', [['Demo: 25 × 4', '100']]],
+    accessibility: ['Accessibility', 'Speech recognition and speech synthesis are enabled where the browser supports them.', [['Speak', 'Speech test']]]
   };
+
+  function speak(text) {
+    if (!('speechSynthesis' in window) || !text) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-IN';
+    u.rate = 0.92;
+    u.pitch = 1;
+    const voices = speechSynthesis.getVoices();
+    const preferred = voices.find(v => /^en-IN$/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang));
+    if (preferred) u.voice = preferred;
+    speechSynthesis.speak(u);
+  }
+  speechSynthesis?.addEventListener?.('voiceschanged', () => {});
 
   function openPanel(key) {
     const p = panels[key] || ['SAI', ''];
@@ -347,10 +361,7 @@ button { -webkit-tap-highlight-color: transparent; }
       b.textContent = label;
       b.onclick = () => {
         log(response, 'ok');
-        if (key === 'accessibility' && label === 'Speak' && 'speechSynthesis' in window) {
-          speechSynthesis.cancel();
-          speechSynthesis.speak(new SpeechSynthesisUtterance('SAI Voice OS is ready.'));
-        }
+        if (key === 'accessibility' && label === 'Speak') speak('SAI Voice OS is ready.');
         if (key === 'calculator' && response === '100') {
           transcript.textContent = '25 times 4 equals 100';
           speak('25 times 4 equals 100');
@@ -364,43 +375,31 @@ button { -webkit-tap-highlight-color: transparent; }
   document.querySelectorAll('.card').forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.panel)));
   document.getElementById('closePanel').onclick = () => panel.classList.remove('open');
 
-  function speak(text) {
-    if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-    }
-  }
-
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
-
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.continuous = false;
     recognition.interimResults = false;
-
     recognition.onstart = () => {
       mic.classList.add('listening');
       state.textContent = 'LISTENING…';
       status.textContent = 'LISTENING';
       transcript.textContent = 'Listening for your command…';
     };
-
-    recognition.onresult = (event) => {
+    recognition.onresult = event => {
       const text = event.results[0][0].transcript.trim();
       transcript.textContent = '“' + text + '”';
       status.textContent = 'PROCESSING';
       log('Voice: ' + text);
       handleCommand(text);
     };
-
-    recognition.onerror = (event) => {
+    recognition.onerror = event => {
       log('Voice error: ' + event.error, 'err');
       state.textContent = 'TAP MIC TO SPEAK';
       status.textContent = 'READY';
     };
-
     recognition.onend = () => {
       mic.classList.remove('listening');
       state.textContent = 'TAP MIC TO SPEAK';
@@ -408,22 +407,48 @@ button { -webkit-tap-highlight-color: transparent; }
     };
   }
 
+  async function internetAnswer(query) {
+    status.textContent = 'ASKING CLAUDE';
+    state.textContent = 'GETTING ANSWER…';
+    transcript.textContent = 'SAI is getting the answer from Claude…';
+    log('Question → Claude: ' + query);
+    try {
+      const response = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: query, language: 'en-IN' })
+      });
+      if (!response.ok) throw new Error('Claude backend returned ' + response.status);
+      const data = await response.json();
+      const answer = data.answer || data.content || data.message;
+      if (!answer) throw new Error('Claude returned no answer');
+      transcript.textContent = answer;
+      log('Claude answer received.', 'ok');
+      speak(answer);
+    } catch (error) {
+      const msg = 'I could not connect to the internet answer service right now.';
+      transcript.textContent = msg;
+      log(msg, 'err');
+      speak(msg);
+    } finally {
+      status.textContent = 'READY';
+      state.textContent = 'TAP MIC TO SPEAK';
+    }
+  }
+
   function handleCommand(raw) {
     const text = raw.toLowerCase();
-    let response = 'I heard: ' + raw + '. A command bridge can execute this through the SAI local agent or backend.';
-    if (text.includes('calculator') || /\b(plus|minus|times|multiplied|divided|divide|calculate)\b/.test(text)) {
-      response = 'Calculator command recognized.';
-    } else if (text.includes('github')) {
-      response = 'GitHub command recognized.';
-    } else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) {
-      response = 'Document command recognized.';
-    } else if (text.includes('open youtube')) {
-      response = 'YouTube command recognized.';
-    } else if (text.includes('screenshot')) {
-      response = 'Screenshot command recognized.';
-    } else if (text.includes('search')) {
-      response = 'Web search command recognized.';
+    const looksLikeQuestion = text.includes('?') || /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw);
+    if (looksLikeQuestion || text.includes('search') || text.includes('answer')) {
+      internetAnswer(raw);
+      return;
     }
+    let response = 'I heard: ' + raw + '. A local command bridge can execute this through the SAI agent.';
+    if (/\\b(plus|minus|times|multiplied|divided|divide|calculate)\\b/.test(text) || text.includes('calculator')) response = 'Calculator command recognized.';
+    else if (text.includes('github')) response = 'GitHub command recognized.';
+    else if (text.includes('document') || text.includes('pdf') || text.includes('text file')) response = 'Document command recognized.';
+    else if (text.includes('open youtube')) response = 'YouTube command recognized.';
+    else if (text.includes('screenshot')) response = 'Screenshot command recognized.';
     log(response, 'ok');
     speak(response);
     status.textContent = 'READY';
@@ -431,21 +456,16 @@ button { -webkit-tap-highlight-color: transparent; }
 
   mic.onclick = () => {
     if (!recognition) {
-      log('Speech recognition is not available in this browser.', 'warn');
-      transcript.textContent = 'Browser speech recognition is unavailable.';
-      return;
+      const msg = 'Speech recognition is not available in this browser.';
+      log(msg, 'warn'); transcript.textContent = msg; speak(msg); return;
     }
-    try { recognition.start(); } catch (e) { /* already running */ }
+    try { recognition.start(); } catch (e) {}
   };
 
-  window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && !e.repeat) {
-      e.preventDefault();
-      mic.click();
-    }
+  window.addEventListener('keydown', e => {
+    if (e.code === 'Space' && !e.repeat) { e.preventDefault(); mic.click(); }
   });
 })();
 </script>
 </body>
-</html>
-</html>
+</html>\n
