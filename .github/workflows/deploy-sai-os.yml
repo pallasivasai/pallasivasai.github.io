@@ -48,10 +48,10 @@ jobs:
           rm -rf pages
           mkdir -p pages/Sai_OS
           cp -R Sai_OS/webApp/build/dist/wasmJs/productionExecutable/. pages/Sai_OS/
+          # The exact repository file Sai_OS/index.html is the public SAI Voice OS interface.
+          # Keep Kotlin/Wasm assets in the deployment, but use the standalone voice UI as the entry page.
+          cp Sai_OS/index.html pages/Sai_OS/index.html
           test -s pages/Sai_OS/index.html
-
-          # Keep the repository-level entry file present at /Sai_OS/index.html.
-          # The generated Kotlin/Wasm site is also placed in this same folder.
           test -f pages/Sai_OS/index.html
 
       - name: Configure GitHub Pages
