@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#070B14">
-<meta name="description" content="SAI Voice OS — voice-first accessibility operating system">
+<meta name="description" content="SAI Voice OS — India-first Telugu and English voice-first accessibility operating system">
 <title>SAI Voice OS</title>
 <style>
 :root {
@@ -238,7 +238,7 @@ button { -webkit-tap-highlight-color: transparent; }
       <h1>SAI Voice OS</h1>
       <p>Voice-first accessibility OS</p>
     </div>
-    <div class="status"><span class="dot"></span><span id="statusText">READY</span></div>
+    <div style="display:flex;align-items:center;gap:7px"><select id="languageSelect" aria-label="Voice language" style="background:#111A2D;color:#F5F7FB;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 8px;font-size:11px"><option value="te-IN">తెలుగు</option><option value="en-IN">English (India)</option><option value="en-US">English (US)</option></select><div class="status"><span class="dot"></span><span id="statusText">READY</span></div></div>
   </header>
 
   <section class="hero">
@@ -299,7 +299,7 @@ button { -webkit-tap-highlight-color: transparent; }
   const panel = document.getElementById('panel');
   const panelTitle = document.getElementById('panelTitle');
   const panelText = document.getElementById('panelText');
-  const panelActions = document.getElementById('panelActions');
+  const panelActions = document.getElementById('panelActions');\n  const languageSelect = document.getElementById('languageSelect');
 
   function log(message, cls) {
     const div = document.createElement('div');
@@ -345,19 +345,12 @@ button { -webkit-tap-highlight-color: transparent; }
   document.querySelectorAll('.card').forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.panel)));
   document.getElementById('closePanel').onclick = () => panel.classList.remove('open');
 
-  function speak(text) {
-    if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
-      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-    }
-  }
-
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
 
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
+    recognition.lang = languageSelect ? languageSelect.value : 'te-IN';
     recognition.continuous = false;
     recognition.interimResults = false;
 
@@ -458,7 +451,7 @@ button { -webkit-tap-highlight-color: transparent; }
       /^(what|who|when|where|why|how|which|is|are|can|does|did|will|tell me|search|find|latest|news)/i.test(raw);
 
     if (looksLikeQuestion || text.includes('search')) {
-      internetAnswer(raw);
+      internetAnswer(normalizeIndiaQuery(raw));
       return;
     }
 
@@ -480,6 +473,31 @@ button { -webkit-tap-highlight-color: transparent; }
     status.textContent = 'READY';
   }
 
+  function updateVoiceLanguage() {
+    if (!languageSelect) return;
+    const lang = languageSelect.value;
+    if (recognition) recognition.lang = lang;
+    const label = lang === 'te-IN' ? 'తెలుగు' : (lang === 'en-IN' ? 'English (India)' : 'English (US)');
+    log('Voice language: ' + label, 'ok');
+    transcript.textContent = lang === 'te-IN'
+      ? 'తెలుగులో మాట్లాడండి…'
+      : 'Speak in ' + label + '…';
+  }
+
+  languageSelect?.addEventListener('change', updateVoiceLanguage);
+
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const lang = languageSelect ? languageSelect.value : 'te-IN';
+    utterance.lang = lang;
+    const voices = speechSynthesis.getVoices();
+    const matching = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase()));
+    if (matching) utterance.voice = matching;
+    speechSynthesis.speak(utterance);
+  }
+
   mic.onclick = () => {
     if (!recognition) {
       log('Speech recognition is not available in this browser.', 'warn');
@@ -488,6 +506,11 @@ button { -webkit-tap-highlight-color: transparent; }
     }
     try { recognition.start(); } catch (e) { /* already running */ }
   };
+
+  // India-first web search context: preserve Telugu/Indian wording instead of forcing US English.
+  function normalizeIndiaQuery(raw) {
+    return raw.trim();
+  }
 
   window.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && !e.repeat) {
