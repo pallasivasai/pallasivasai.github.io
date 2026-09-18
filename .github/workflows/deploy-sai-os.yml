@@ -50,6 +50,10 @@ jobs:
           cp -R Sai_OS/webApp/build/dist/wasmJs/productionExecutable/. pages/Sai_OS/
           test -s pages/Sai_OS/index.html
 
+          # Keep the repository-level entry file present at /Sai_OS/index.html.
+          # The generated Kotlin/Wasm site is also placed in this same folder.
+          test -f pages/Sai_OS/index.html
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
