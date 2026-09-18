@@ -377,30 +377,76 @@ button { -webkit-tap-highlight-color: transparent; }
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
+  let isListening = false;
+
+  async function requestMicrophonePermission() {
+    if (!navigator.mediaDevices?.getUserMedia) return true;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(track => track.stop());
+      return true;
+    } catch (error) {
+      log('Microphone permission denied or unavailable: ' + error.name, 'err');
+      transcript.textContent = 'Please allow microphone access in your browser settings, then tap the microphone again.';
+      speak('Please allow microphone access and try again.');
+      status.textContent = 'MICROPHONE BLOCKED';
+      state.textContent = 'ALLOW MICROPHONE';
+      return false;
+    }
+  }
+
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
     recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
     recognition.onstart = () => {
+      isListening = true;
       mic.classList.add('listening');
       state.textContent = 'LISTENING…';
       status.textContent = 'LISTENING';
       transcript.textContent = 'Listening for your command…';
     };
     recognition.onresult = event => {
-      const text = event.results[0][0].transcript.trim();
-      transcript.textContent = '“' + text + '”';
-      status.textContent = 'PROCESSING';
-      log('Voice: ' + text);
-      handleCommand(text);
+      let finalText = '';
+      let interimText = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const part = event.results[i][0].transcript;
+        if (event.results[i].isFinal) finalText += part;
+        else interimText += part;
+      }
+      if (interimText) {
+        transcript.textContent = 'Listening: “' + interimText.trim() + '”';
+      }
+      if (finalText.trim()) {
+        const text = finalText.trim();
+        transcript.textContent = '“' + text + '”';
+        status.textContent = 'PROCESSING';
+        log('Voice: ' + text);
+        handleCommand(text);
+      }
     };
     recognition.onerror = event => {
+      isListening = false;
       log('Voice error: ' + event.error, 'err');
-      state.textContent = 'TAP MIC TO SPEAK';
-      status.textContent = 'READY';
+      mic.classList.remove('listening');
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        transcript.textContent = 'Microphone access is blocked. Allow microphone permission for this site and try again.';
+        status.textContent = 'MICROPHONE BLOCKED';
+        state.textContent = 'ALLOW MICROPHONE';
+      } else if (event.error === 'no-speech') {
+        transcript.textContent = 'No speech detected. Tap the microphone and speak clearly.';
+        status.textContent = 'READY';
+        state.textContent = 'TAP MIC TO SPEAK';
+      } else {
+        transcript.textContent = 'Voice recognition error: ' + event.error;
+        status.textContent = 'READY';
+        state.textContent = 'TAP MIC TO SPEAK';
+      }
     };
     recognition.onend = () => {
+      isListening = false;
       mic.classList.remove('listening');
       state.textContent = 'TAP MIC TO SPEAK';
       if (status.textContent === 'LISTENING') status.textContent = 'READY';
@@ -454,12 +500,26 @@ button { -webkit-tap-highlight-color: transparent; }
     status.textContent = 'READY';
   }
 
-  mic.onclick = () => {
+  mic.onclick = async () => {
     if (!recognition) {
       const msg = 'Speech recognition is not available in this browser.';
       log(msg, 'warn'); transcript.textContent = msg; speak(msg); return;
     }
-    try { recognition.start(); } catch (e) {}
+    if (isListening) {
+      recognition.stop();
+      return;
+    }
+    const allowed = await requestMicrophonePermission();
+    if (!allowed) return;
+    try {
+      status.textContent = 'STARTING MIC';
+      state.textContent = 'STARTING…';
+      recognition.start();
+    } catch (e) {
+      log('Could not start voice recognition: ' + e.message, 'err');
+      status.textContent = 'READY';
+      state.textContent = 'TAP MIC TO SPEAK';
+    }
   };
 
   window.addEventListener('keydown', e => {
