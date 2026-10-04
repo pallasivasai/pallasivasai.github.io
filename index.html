@@ -1,642 +1,509 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title> Siva_Portfolio</title>
-        <!-- For thumbnail-->
-        <meta property="og:url"                content="https://github.com/pallasivasai/pallasivasai.github.io" />
-        <!-- <meta property="og:type"               content="W" /> -->
-        <meta property="og:title"              content="Portfolio" />
-        <meta property="og:description"        content="It is my personal portfolio website" />
-        <meta property="og:image"              content="https://github.com/pallasivasai/pallasivasai.github.io/visit_my_portfolio.jpg" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Palla Siva Sai | SQL & Database Developer</title>
 
-        <!---->
-        <!-- <script src="jquery-2.1.4.js"></script> -->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
-        <!-- Import typed.min.js file from typed.js folder -->
-        <script src="./typed.js-master/lib/typed.min.js"></script>
-        <!-- Add jquery cdn -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </head>
-    <body>
-        <div class="loader-wrapper">
-            <span class="loader"><span class="loader-inner">PS</span></span>
-        </div>
-        <!-- NAV BAR -->
-        <div class="nav-bar" id="myTopnav">
-            <a href="https://github.com/pallasivasai/pallasivasai.github.io"><p>PS</p></a>
-            <ul>
-                <li><a href="#home" class="active nav-items">Home</a></li>
-                <li><a href="#about" class="nav-items">About</a></li>
-                <li><a href="#skills" class="nav-items">Skills</a></li>
-                <li><a href="#projects" class="nav-items">Projects</a></li>
-                <li><a href="#resume" class="nav-items">Resume</a></li>
-                <li><a href="https://pallasivasai.github.io/contact.html" class="nav-items">Contact</a></li>
-            </ul>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                <i class="fa fa-bars" id="myDIV"></i>
-            </a>
-        </div>
-        <!-- HOME SECTION -->
-        <section id="home"><br>
-            <div>
-                <img src="psivasai.jpg" class="about-img">
-            </div>
-            <h3 class="my-intro" style="margin-top:20px;">Hi👋 There!!!</h3>
-            <div class="auto-type">
-                <h2 class="my-intro">I'm <span id="animate" class="animate" style="color: #00ff0d;"></span></h2>
-            </div><br>
-            <div class="text-center">
-                <a href="https://drive.google.com/file/d/153Xei42LAVjQTzg14jL-lnj9fDeRx1Nw/view?usp=sharing"><button type="button" class="btn btn-outline-primary">Resume!!</button></a>
-            </div>
-        </section> 
-        <!--About section-->
-        <section id="about" style="max-height: 750px;">
-            <h1 class="heading1">About</h1>
-            <div class="flex-container">
-                <img src="P_S.jpg" class="about-img2">
-                <p class="about-para"><span style="color: rgb(14, 243, 52); font-size: 24px;text-align: right;">Hello Recruiter!!!</span><br>My name is PALLA SIVA SAI and I am searching for an SQL-related entry-level position. My interests include SQL database design, query optimization, database management, and backend development. I'm passionate about working with relational databases and always learning new SQL techniques and best practices.
-    <br><br>
-    My career goal is to become a skilled database professional and SQL expert in the IT sector. I'm genuinely excited by complex database challenges and enjoy crafting efficient, optimized SQL queries to solve real-world data problems.
-</p>
-            </div>
-        </section>
-        <!--Skills Section-->
-        <section id="skills">
-            <h1 class="heading1">Skills</h1>
-            <h4>
-                <span style="color: #09fa09;">--</span>My Techstack<span style="color: #00ff2a;">--</span>
-            </h4>
-            <!-------------------------------------------------------------------------------->
-            <div style="margin-right: 10px; margin-left: 10px;">
-                
-                <p class="skill-name">SQL & Database Management</p>
-                <div class="container">
-                    <div class="skill sql">95%</div>
-                </div>
-                <p class="skill-name">Java</p>
-                <div class="container">
-                    <div class="skill java">90%</div>
-                </div>
+    <meta property="og:url" content="https://github.com/pallasivasai/pallasivasai.github.io">
+    <meta property="og:title" content="Palla Siva Sai | SQL & Database Developer">
+    <meta property="og:description" content="SQL & Database Developer portfolio featuring database projects, transaction research, AI-assisted software development and software engineering projects.">
+    <meta property="og:image" content="https://github.com/pallasivasai/pallasivasai.github.io/visit_my_portfolio.jpg">
 
-                <p class="skill-name">Python</p>
-                <div class="container">
-                    <div class="skill python">90%</div>
-                </div>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="./typed.js-master/lib/typed.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
 
-                <p class="skill-name">AI-Assisted Software Development</p>
-                <div class="container">
-                    <div class="skill html">85%</div>
-                </div>
-                
-                <p class="skill-name">Version Control System</p>
-                <div class="container">
-                    <div class="skill php">80%</div>
-                </div>
-
-                <p class="skill-name">PHP</p>
-                <div class="container">
-                    <div class="skill css">70%</div>
-                </div>
-                
-                <p class="skill-name">DSA</p>
-                <div class="container">
-                    <div class="skill dsa">60%</div>
-                </div>
-            </div>
-            <!-------------------------------------------------------------------------------->
-        </section>
-        <!--Projects Section-->
-<section id="projects">
-    <h1 class="heading1">Projects</h1>
-    <h4>
-        <span style="color: #09fa09;">--</span>My Work<span style="color: #00ff2a;">--</span>
-    </h4>
-    
-    <div class="projects-container">
-        <!-- Project 1: SAIBANK -->
-        <div class="project-card">
-            <h3 class="project-title">🏦 SAIBANK</h3>
-            <p class="project-description">
-                A revolutionary banking system featuring a unique 30-minute payment reversal mechanism using SQL triggers. If a wrong payment is made, it can be automatically reversed within 30 minutes through intelligent trigger-based transaction monitoring. This innovative concept demonstrates advanced database automation, time-based validation, and seamless rollback functionality for enhanced banking security.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">SQL Triggers</span>
-                <span class="tech-badge">Database</span>
-                <span class="tech-badge">MySQL</span>
-                <span class="tech-badge">TypeScript</span>
-                <span class="tech-badge">React</span>
-                <span class="tech-badge">Tailwind CSS</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/saibank" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://saibank.lovable.app/" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 2: Authentication System -->
-        <div class="project-card">
-            <h3 class="project-title">🔑 Authentication System with Database</h3>
-            <p class="project-description">
-                A complete signup and login system with working database integration, featuring secure user authentication and session management.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">HTML</span>
-                <span class="tech-badge">PHP</span>
-                <span class="tech-badge">MySQL</span>
-                <span class="tech-badge">Authentication</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/Signup-login-system-with-working-data-base" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 3: Vote Management System -->
-        <div class="project-card">
-            <h3 class="project-title">🗳️ Vote Management System</h3>
-            <p class="project-description">
-                A voting system application built with PHP for managing elections and polls with database-driven functionality.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">PHP</span>
-                <span class="tech-badge">MySQL</span>
-                <span class="tech-badge">Database Design</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/votesystem" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 4: S-Secret Chat -->
-        <div class="project-card">
-            <h3 class="project-title">💬 S-Secret Chat</h3>
-            <p class="project-description">
-                A private and secure chat application designed exclusively for couples who want complete privacy in their conversations. Each user sets their own password to protect their inbox—anyone wanting to message them must enter the correct password before the message box opens. Features end-to-end encryption ensuring only you and your partner can read messages, with password-protected access and a clean, intimate interface built for trust and love.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">TypeScript</span>
-                <span class="tech-badge">React</span>
-                <span class="tech-badge">End-to-End Encryption</span>
-                <span class="tech-badge">Lovable Cloud</span>
-                <span class="tech-badge">Tailwind CSS</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/sai-web" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://sai-web.lovable.app/" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 5: DDoS Attack Detection -->
-        <div class="project-card">
-            <h3 class="project-title">🛡️ DDoS Attack Detection System (SAI Algorithm)</h3>
-            <p class="project-description">
-                A comprehensive machine learning solution for detecting Distributed Denial of Service (DDoS) attacks using my own SAI algorithm with advanced data analysis techniques. Achieves approximately 99% accuracy in threat detection.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Machine Learning</span>
-                <span class="tech-badge">SAI Algorithm</span>
-                <span class="tech-badge">Jupyter Notebook</span>
-                <span class="tech-badge">Cybersecurity</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/SAI_Algorithm_To_Detecting_DDoS_Attacks" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://colab.research.google.com/github/pallasivasai/Comprehensive-Approach-to-Detecting-DDoS-Attacks-using-Machine-Learning/blob/main/project.ipynb" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 6: SAI Encryption Algorithm -->
-        <div class="project-card">
-            <h3 class="project-title">🔐 SAI-Encryption-Decryption Algorithm (Always O(1))</h3>
-            <p class="project-description">
-                A revolutionary encryption and decryption algorithm that achieves constant O(1) time complexity for all operations. This groundbreaking approach ensures consistent performance regardless of data size, making it ideal for high-performance cryptographic applications where speed and efficiency are critical.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Cryptography</span>
-                <span class="tech-badge">Algorithm Design</span>
-                <span class="tech-badge">Data Security</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/SAI-Encryption-Decryption-Algorithm" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://colab.research.google.com/drive/1r97QtUcIuUiji6DTdmZNPrcfKyfskmEI?usp=sharing" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 7: SAI-GPT -->
-        <div class="project-card">
-            <h3 class="project-title">🤖 SAI-GPT</h3>
-            <p class="project-description">
-                An AI-powered devotional assistant designed for everyone, including non-educational persons, to explore and learn about Grandhas, spiritual texts, devotional questions, and knowledge about Hindu gods. Built to make spiritual wisdom accessible to all through conversational AI.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">TypeScript</span>
-                <span class="tech-badge">React</span>
-                <span class="tech-badge">AI</span>
-                <span class="tech-badge">Lovable Cloud</span>
-                <span class="tech-badge">Tailwind CSS</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/sai-gpt" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://sai-gpt.lovable.app/" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 8: SAI Game -->
-        <div class="project-card">
-            <h3 class="project-title">🎮 SAI Game</h3>
-            <p class="project-description">
-                A fascinating math magic trick game that demonstrates algebraic principles. You choose a number, the program performs a series of arithmetic operations (doubling, adding an imaginary number, halving, and subtracting), and mathematically predicts the result will always be half your imaginary number - showcasing Python programming and mathematical thinking.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Game Development</span>
-                <span class="tech-badge">Jupyter Notebook</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/My_own_game" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://colab.research.google.com/drive/1edrBGixKoIsSJ7DbaXo8S9Yyt9nDChdj?usp=sharing" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 9: SAI Search Algorithm -->
-        <div class="project-card">
-            <h3 class="project-title">🔍 SAI Search Algorithm</h3>
-            <p class="project-description">
-                An innovative perfect hashing algorithm that implements a two-level universal hashing scheme with cryptographic security. Uses SHA-256 and collision-free data structures to achieve O(1) lookup time. Supports bidirectional search - find values by keys or keys by values. Features include cryptographic randomness and guaranteed collision-free storage, making it ideal for high-performance data retrieval applications.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Algorithm Design</span>
-                <span class="tech-badge">Data Structures</span>
-                <span class="tech-badge">Cryptography</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/Searching_Algorithm_By_Me" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://colab.research.google.com/drive/1zjPs60ea85VchQRWU1IQjpIA3ejoRAFl?usp=sharing" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 10: Password Cracker -->
-        <div class="project-card">
-            <h3 class="project-title">🔓 Password Cracker</h3>
-            <p class="project-description">
-                A comprehensive Python-based password cracking tool demonstrating multiple attack methodologies including brute force, dictionary attacks, and hash cracking techniques. Features customizable character sets, wordlist integration, and support for common hash algorithms (MD5, SHA-1, SHA-256). Built for educational purposes to help cybersecurity enthusiasts understand password vulnerabilities and the importance of strong password policies.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Cybersecurity</span>
-                <span class="tech-badge">Hash Algorithms</span>
-                <span class="tech-badge">Brute Force</span>
-                <span class="tech-badge">Educational</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/Password-Cracker" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://colab.research.google.com/drive/1Y2qRXzUFSR_JgRjYLc1gRdiq9Iu3unN2?usp=sharing" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 11: Cyber Awareness Quiz -->
-        <div class="project-card">
-            <h3 class="project-title">🛡️ Cyber Awareness Quiz By P Siva Sai</h3>
-            <p class="project-description">
-                An interactive cybersecurity awareness quiz application with a unique fullscreen enforcement feature—once the quiz starts, users cannot escape fullscreen mode until completion. This ensures focused learning and prevents cheating during assessments. Designed to educate users about cyber threats, safe online practices, and security best practices through engaging questions.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">JavaScript</span>
-                <span class="tech-badge">HTML</span>
-                <span class="tech-badge">CSS</span>
-                <span class="tech-badge">Fullscreen API</span>
-                <span class="tech-badge">Cybersecurity Education</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/s-quiz" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://s-quiz.lovable.app/auth" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 12: Instagram Phishing Attack -->
-        <div class="project-card">
-            <h3 class="project-title">🎣 Instagram Phishing Attack (Learning)</h3>
-            <p class="project-description">
-                An educational demonstration of phishing attack techniques for cybersecurity awareness and ethical hacking learning purposes. Features GitHub API integration to store captured data directly to a GitHub repository, showcasing API usage and data handling.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">Security Research</span>
-                <span class="tech-badge">Ethical Hacking</span>
-                <span class="tech-badge">HTML</span>
-                <span class="tech-badge">CSS</span>
-                <span class="tech-badge">JavaScript</span>
-                <span class="tech-badge">GitHub API</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/Psivasai970/Psivasai970.github.io" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://psivasai970.github.io/" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 13: Recipe Ideas App -->
-        <div class="project-card">
-            <h3 class="project-title">🍳 Recipe Ideas App</h3>
-            <p class="project-description">
-                A modern web application that helps users discover and explore various recipe ideas with an intuitive and responsive interface.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">TypeScript</span>
-                <span class="tech-badge">React</span>
-                <span class="tech-badge">Tailwind CSS</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/Recipe-Ideas-App" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://recipe-ideas-app-for-ss4q.bolt.host/" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- Project 14: Book Finder Application -->
-        <div class="project-card">
-            <h3 class="project-title">📚 Book Finder Application</h3>
-            <p class="project-description">
-                A specialized application for college students to easily search, discover, and find books relevant to their courses and interests.
-            </p>
-            <div class="project-tech">
-                <span class="tech-badge">TypeScript</span>
-                <span class="tech-badge">React</span>
-                <span class="tech-badge">API Integration</span>
-            </div>
-            <div class="project-buttons">
-                <a href="https://github.com/pallasivasai/Book-Finder-Application-for-College-Students" target="_blank">
-                    <button type="button" class="btn btn-outline-primary btn-project">
-                        <i class="fa fa-code"></i> Code
-                    </button>
-                </a>
-                <a href="https://book-finder-applicat-v34g.bolt.host/" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project">
-                        <i class="fa fa-play-circle"></i> Demo
-                    </button>
-                </a>
-            </div>
-        </div>
-
-        <!-- View More Projects Card -->
-        <div class="project-card" style="background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border: 2px dashed rgba(0, 255, 13, 0.4);">
-            <h3 class="project-title" style="text-align: center; font-size: 28px;">🚀 View More Projects</h3>
-            <p class="project-description" style="text-align: center; font-size: 18px; margin-bottom: 30px;">
-                Explore my complete collection of projects, code repositories, and contributions on GitHub.
-            </p>
-            <div style="display: flex; justify-content: center;">
-                <a href="https://github.com/pallasivasai?tab=repositories" target="_blank">
-                    <button type="button" class="btn btn-outline-success btn-project" style="font-size: 18px; padding: 15px 40px;">
-                        <i class="fa fa-github"></i> GitHub Repositories
-                    </button>
-                </a>
-            </div>
-        </div>
-
+<body>
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner">PS</span></span>
     </div>
-</section>
-        <!--Resume Section-->
-        <section id="resume" style="padding-bottom: 100px;">
-            <h1 class="heading1" style="margin-bottom:14px">Resume</h1>
-            <div class="row" style="margin-right: 15px; margin-left: 15px;">
-                <div class="col">
-                    <h3 class="heading2">Objective</h3>
-                    <div class="timeline-heading">
-                        <div>
-                            <h3>P siva sai</h3>
-                            <p>Aspiring to start a career in any sector with the goal of being a professional. Looking for a dynamic work environment that will provide me a platform to utilize my skills and make me an efficient part of the team. My strengths include being a team player, hard worker & quick learner. I possess strong interpersonal and communication skills. And also have the ability to perform multiple tasks effectively under pressure within stipulated deadlines as per the job requirement.</p>
-                        </div>
-                    </div> 
-                    <!----------Education---------->
-                    <h3 class="heading2">Education</h3>
-                    <div class="timeline-heading">
 
-                            <div class="edu-info">
-                                    <h3>Master of Computer Application</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">2023 - 2025</button>
-                                    <br><i style="color: aliceblue;">Koneru Lakshmaiah Education Foundation (KLU)</i>
-                                    <span><i style="color: aliceblue;"> &emsp;&emsp;&emsp; CGPA 9.45 </i></span>
-                                    <h5 style="color: aliceblue;">Coursework:</h5>
-                                    <p> Cyber Security, Computers, DBMS, OS, DSA, C </p>
-                                </div>
-                        
-                                <div class="edu-info">
-                                    <h3>B.sc(Computers)</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">2016 - 2022</button>
-                                    <br><i style="color: aliceblue;">Chaitanya bharathi degree college,Chirala</i>
-                                    <span><i style="color: aliceblue;"> &emsp;&emsp;&emsp; CGPA 6.89</i></span>
-                                    <h5 style="color: aliceblue;">Coursework:</h5>
-                                    <p>Maths, Physics, Computers, DBMS, OS, DSA, C, java, </p>
-                                </div>
-                                <div class="edu-info">
-                                    <h3>Pre University Course</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">2014 - 2016</button>
-                                    <br><i style="color: aliceblue;">Ignatius junior college,Karempudi</i>
-                                    <span><i style="color: aliceblue;"> &emsp;&emsp;&emsp; CGPA 6.0</i></span>
-                                    <h5 style="color: aliceblue;">Coursework:</h5>
-                                    <p>Physics, Maths, Chemistry, Telugu, English</p>
-                                </div>
-                                <div class="edu-info">
-                                    <h3>SSC (10th)</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">2013 - 2014</button>
-                                    <br><i style="color: aliceblue;">B ZP HIGH SCHOOL,Karempudi</i>
-                                    <span><i style="color: aliceblue;"> &emsp;&emsp;&emsp; GPA 5.5</i></span>
-                                    <h5 style="color: aliceblue;">Coursework:</h5>
-                                    <p>Physics, Maths, Chemistry, Telugu, English, Hindi</p>
-                                </div>
-                                                        
+    <nav class="nav-bar" id="myTopnav">
+        <a href="https://github.com/pallasivasai/pallasivasai.github.io"><p>PS</p></a>
+        <ul>
+            <li><a href="#home" class="active nav-items">Home</a></li>
+            <li><a href="#about" class="nav-items">About</a></li>
+            <li><a href="#skills" class="nav-items">Skills</a></li>
+            <li><a href="#projects" class="nav-items">Projects</a></li>
+            <li><a href="#research" class="nav-items">Research</a></li>
+            <li><a href="#resume" class="nav-items">Resume</a></li>
+            <li><a href="#contact" class="nav-items">Contact</a></li>
+        </ul>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars" id="myDIV"></i>
+        </a>
+    </nav>
+
+    <section id="home"><br>
+        <div>
+            <img src="psivasai.jpg" class="about-img" alt="Palla Siva Sai">
+        </div>
+        <h3 class="my-intro" style="margin-top:20px;">Hi 👋 There!!!</h3>
+        <div class="auto-type">
+            <h2 class="my-intro">I'm <span id="animate" class="animate" style="color: #00ff0d;"></span></h2>
+        </div>
+        <p class="lead px-3" style="max-width: 900px; margin: 0 auto 20px;">
+            SQL & Database Developer focused on database design, SQL development, transaction workflows,
+            database-backed applications and AI-assisted software development.
+        </p>
+        <div class="text-center">
+            <a href="https://pallasivasai.lovable.app/" target="_blank"><button type="button" class="btn btn-outline-success">Portfolio</button></a>
+            <a href="https://drive.google.com/file/d/153Xei42LAVjQTzg14jL-lnj9fDeRx1Nw/view?usp=sharing" target="_blank"><button type="button" class="btn btn-outline-primary">Resume</button></a>
+            <a href="https://github.com/pallasivasai" target="_blank"><button type="button" class="btn btn-outline-light">GitHub</button></a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h1 class="heading1">Database-Focused Profile</h1>
+        <div class="flex-container">
+            <img src="P_S.jpg" class="about-img2" alt="Palla Siva Sai">
+            <div class="about-para">
+                <span style="color: rgb(14, 243, 52); font-size: 24px;">Hello Recruiter!!!</span>
+                <br><br>
+                I am <strong>Palla Siva Sai</strong>, a software developer with a strong focus on
+                <strong>SQL and database development</strong>. I build database-driven applications where
+                schema design, SQL operations, transactions, integrity, recovery workflows and data management
+                are central parts of the system.
+                <br><br>
+                My current portfolio direction is centered on
+                <strong>SQL / Database Developer</strong> roles, while also highlighting
+                <strong>AI-Assisted Software Development</strong>, backend development, application engineering
+                and research-oriented software projects.
+                <br><br>
+                My work includes SQL/MySQL/SQLite/Supabase projects, database-backed authentication,
+                CRUD systems, transaction recovery workflows, data-focused applications, AI/RAG systems,
+                cybersecurity projects and software engineering experiments.
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h1 class="heading1">Skills</h1>
+        <h4><span style="color: #09fa09;">--</span>Database & Software Engineering Stack<span style="color: #00ff2a;">--</span></h4>
+
+        <div class="container-fluid px-3">
+            <p class="skill-name">SQL & Database Development</p>
+            <div class="container"><div class="skill sql">95%</div></div>
+
+            <p class="skill-name">MySQL / SQLite / Supabase</p>
+            <div class="container"><div class="skill sql">92%</div></div>
+
+            <p class="skill-name">Database Design / CRUD / Transactions</p>
+            <div class="container"><div class="skill sql">90%</div></div>
+
+            <p class="skill-name">Python</p>
+            <div class="container"><div class="skill python">90%</div></div>
+
+            <p class="skill-name">Java</p>
+            <div class="container"><div class="skill java">88%</div></div>
+
+            <p class="skill-name">AI-Assisted Software Development</p>
+            <div class="container"><div class="skill html">88%</div></div>
+
+            <p class="skill-name">Version Control System</p>
+            <div class="container"><div class="skill php">85%</div></div>
+
+            <p class="skill-name">PHP / MySQL Backend</p>
+            <div class="container"><div class="skill css">80%</div></div>
+
+            <p class="skill-name">React / TypeScript</p>
+            <div class="container"><div class="skill css">78%</div></div>
+
+            <p class="skill-name">Cybersecurity / Security Engineering</p>
+            <div class="container"><div class="skill dsa">75%</div></div>
+
+            <p class="skill-name">Data Analytics / Power BI / DAX</p>
+            <div class="container"><div class="skill dsa">72%</div></div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h1 class="heading1">Selected Projects</h1>
+        <h4><span style="color: #09fa09;">--</span>Database First + Software Engineering Portfolio<span style="color: #00ff2a;">--</span></h4>
+
+        <div class="projects-container">
+
+            <div class="project-card">
+                <h3 class="project-title">🏦 SAIBANK</h3>
+                <p class="project-description">
+                    Database-driven banking prototype built around transaction processing and time-bound
+                    wrong-payment recovery. The current implementation uses PostgreSQL/Supabase database
+                    functions, transaction grouping, row locking, reversal workflows, negative-balance
+                    recovery and account freeze/unfreeze logic. The wider research framework explores
+                    a 24-hour recovery window.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">PostgreSQL</span>
+                    <span class="tech-badge">SQL</span>
+                    <span class="tech-badge">Supabase</span>
+                    <span class="tech-badge">React</span>
+                    <span class="tech-badge">TypeScript</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/saibank" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                    <a href="https://saibank.lovable.app/" target="_blank"><button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🗄️ Sai CRUD Operations Lab</h3>
+                <p class="project-description">
+                    Database learning and visualization project demonstrating the flow from user-defined fields
+                    and forms to CRUD operations, SQL queries and database-backed output.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">SQL</span>
+                    <span class="tech-badge">CRUD</span>
+                    <span class="tech-badge">Supabase</span>
+                    <span class="tech-badge">TypeScript</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/sai-crudop" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🔑 Authentication System with Database</h3>
+                <p class="project-description">
+                    Signup and login application with database integration and session management,
+                    demonstrating practical PHP + MySQL backend workflows.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">PHP</span>
+                    <span class="tech-badge">MySQL</span>
+                    <span class="tech-badge">Authentication</span>
+                    <span class="tech-badge">Sessions</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/Signup-login-system-with-working-data-base" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🗳️ Vote Management System</h3>
+                <p class="project-description">
+                    PHP/MySQL database-driven voting application for managing election and poll records.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">PHP</span>
+                    <span class="tech-badge">MySQL</span>
+                    <span class="tech-badge">Database Design</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/votesystem" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">👥 HR Workforce Management System</h3>
+                <p class="project-description">
+                    Database-driven HR and analytics application covering employee, attendance, performance,
+                    goals, leave management, Employee 360 and reporting workflows.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">SQLite</span>
+                    <span class="tech-badge">SQL</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Reporting</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/HR-Workforce-Employee-Performance-Management-System" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🤖 SAI-GPT</h3>
+                <p class="project-description">
+                    AI-powered conversational application focused on making spiritual knowledge accessible
+                    through an interactive assistant.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">AI</span>
+                    <span class="tech-badge">TypeScript</span>
+                    <span class="tech-badge">React</span>
+                    <span class="tech-badge">Cloud</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/sai-gpt" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                    <a href="https://sai-gpt.lovable.app/" target="_blank"><button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🧠 SAI-RAG</h3>
+                <p class="project-description">
+                    Retrieval-Augmented Generation project focused on knowledge-base creation, retrieval and
+                    grounded AI answers.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">RAG</span>
+                    <span class="tech-badge">LLM</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">AI</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/SAI-RAG" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🎙️ SAI VoiceOS</h3>
+                <p class="project-description">
+                    Voice-first assistant concept designed to support hands-free computing, voice commands,
+                    search, accessibility and conversational interaction.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Voice AI</span>
+                    <span class="tech-badge">Speech</span>
+                    <span class="tech-badge">Accessibility</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/SAI_VoiceOS_APP" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🖱️ S-Mouse</h3>
+                <p class="project-description">
+                    Computer-vision based hand-gesture mouse control project exploring touchless interaction,
+                    pointer movement, clicking, dragging and navigation.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Computer Vision</span>
+                    <span class="tech-badge">MediaPipe</span>
+                    <span class="tech-badge">Automation</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/S-Mouse" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🛡️ DDoS Attack Detection — SAI Algorithm</h3>
+                <p class="project-description">
+                    Machine-learning based DDoS detection research/project using multiple classifiers combined
+                    into a voting approach, with reported high detection accuracy.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Machine Learning</span>
+                    <span class="tech-badge">Cybersecurity</span>
+                    <span class="tech-badge">Jupyter</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/SAI_Algorithm_To_Detecting_DDoS_Attacks" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                    <a href="https://colab.research.google.com/github/pallasivasai/Comprehensive-Approach-to-Detecting-DDoS-Attacks-using-Machine-Learning/blob/main/project.ipynb" target="_blank"><button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🔐 SAI Encryption / Decryption Algorithm</h3>
+                <p class="project-description">
+                    Experimental algorithm project exploring encryption/decryption, cryptographic design and
+                    performance-oriented implementation.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Cryptography</span>
+                    <span class="tech-badge">Algorithms</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/SAI-Encryption-Decryption-Algorithm" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                    <a href="https://colab.research.google.com/drive/1r97QtUcIuUiji6DTdmZNPrcfKyfskmEI?usp=sharing" target="_blank"><button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🔍 SAI Search Algorithm</h3>
+                <p class="project-description">
+                    Experimental search/data-structure project exploring hashing, bidirectional lookup and
+                    constant-time lookup goals.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Algorithms</span>
+                    <span class="tech-badge">Data Structures</span>
+                    <span class="tech-badge">Cryptography</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/Searching_Algorithm_By_Me" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">💬 S-Secret Chat</h3>
+                <p class="project-description">
+                    Privacy-oriented chat application concept with protected access and encrypted communication
+                    features.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">React</span>
+                    <span class="tech-badge">TypeScript</span>
+                    <span class="tech-badge">Security</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/sai-web" target="_blank"><button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Code</button></a>
+                    <a href="https://sai-web.lovable.app/" target="_blank"><button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</button></a>
+                </div>
+            </div>
+
+            <div class="project-card" style="background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border: 2px dashed rgba(0, 255, 13, 0.4);">
+                <h3 class="project-title" style="text-align:center;">🚀 More Projects & Repositories</h3>
+                <p class="project-description" style="text-align:center;">
+                    Explore additional software, cybersecurity, data, AI, algorithm and web-development work on GitHub.
+                </p>
+                <div style="display:flex;justify-content:center;">
+                    <a href="https://github.com/pallasivasai?tab=repositories" target="_blank">
+                        <button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-github"></i> GitHub Repositories</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="research">
+        <h1 class="heading1">Research & Technical Work</h1>
+        <h4><span style="color:#09fa09;">--</span>Research Papers & Technical Exploration<span style="color:#00ff2a;">--</span></h4>
+
+        <div class="projects-container">
+            <div class="project-card">
+                <h3 class="project-title">💳 24-Hour Time-Bound Wrong Payment Recovery Framework</h3>
+                <p class="project-description">
+                    Research proposal for secure digital banking transaction recovery within a defined
+                    reporting window. The work explores transaction reversal, database controls, audit logging,
+                    verification, negative-balance recovery and future-credit recovery.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Digital Banking</span>
+                    <span class="tech-badge">SQL</span>
+                    <span class="tech-badge">Database Security</span>
+                    <span class="tech-badge">Transaction Recovery</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://www.researchgate.net/publication/414356347_A_24-Hour_Time-Bound_Wrong_Payment_Recovery_Framework_for_Secure_Digital_Banking_Transactions_P_Siva_Sai_Independent_Researcher_A_Proposed_Architecture_for_Transaction_Reversal_Negative-Balance_Recove" target="_blank">
+                        <button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-file-text"></i> ResearchGate</button>
+                    </a>
+                    <a href="https://doi.org/10.13140/RG.2.2.20508.24960" target="_blank">
+                        <button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-link"></i> DOI</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3 class="project-title">🛡️ Comprehensive DDoS Attack Detection using Machine Learning</h3>
+                <p class="project-description">
+                    Research/project work on machine-learning based DDoS detection using multiple classifiers
+                    and a voting-based SAI Algorithm, with a reported accuracy around 99.82% in the project results.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">Machine Learning</span>
+                    <span class="tech-badge">Cybersecurity</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">Classification</span>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/SAI_Algorithm_To_Detecting_DDoS_Attacks" target="_blank">
+                        <button type="button" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> Project</button>
+                    </a>
+                    <a href="https://colab.research.google.com/github/pallasivasai/Comprehensive-Approach-to-Detecting-DDoS-Attacks-using-Machine-Learning/blob/main/project.ipynb" target="_blank">
+                        <button type="button" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Notebook</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume" style="padding-bottom:100px;">
+        <h1 class="heading1" style="margin-bottom:14px;">Resume Snapshot</h1>
+        <div class="row" style="margin-right:15px;margin-left:15px;">
+
+            <div class="col">
+                <h3 class="heading2">Education</h3>
+                <div class="timeline-heading">
+                    <div class="edu-info">
+                        <h3>Master of Computer Applications (MCA)</h3>
+                        <button type="button" class="btn btn-outline-secondary btn-sm">2023 - 2025</button>
+                        <br><i style="color:aliceblue;">Koneru Lakshmaiah Education Foundation (KLU)</i>
+                        <p>CGPA: 9.45 · Cyber Security, DBMS, Operating Systems, DSA and Computing</p>
                     </div>
                 </div>
-                <!----Another column-->
-                <div class="col">
-                    <!--experience-->
-                    <h3 class="heading2">Experience</h3>
-                    <div class="timeline-heading2">
-                                <div class="work-info">
-                                    <h3>Software Engineer Intern</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">Mar 2023 - May 2023</button>
-                                    <br><i style="color: aliceblue;">Abhyaz · Chennai, Tamil Nadu, India</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Developed full-stack web applications with SQL database backend. Designed and implemented database schemas, wrote complex SQL queries for data retrieval and manipulation. Created data-driven dashboards for real-time business metrics visualization. Worked on database performance optimization, indexing strategies, and query tuning to enhance application efficiency.</p>
-                                </div>
-                                <div class="work-info">
-                                    <h3>Open Source Contributor</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">May 2024 - Aug 2024</button>
-                                    <br><i style="color: aliceblue;">GirlScript Summer of Code</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Contributed to 10+ open-source repositories with focus on web development and database projects. Successfully merged 38 pull requests involving SQL database implementations, web applications with MySQL integration, and database optimization tasks. Achieved Global Rank 80 among thousands of contributors. Technologies used: HTML, CSS, JavaScript, Python, MySQL, and SQL database management.</p>
-                                </div>
-                                <div class="work-info">
-                                    <h3>Web Development Intern</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">Jun 2024 - Jul 2024</button>
-                                    <br><i style="color: aliceblue;">Unified Mentor</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Built responsive web applications with database integration. Developed SQL queries for data manipulation and retrieval. Created interactive dashboards to visualize business metrics and KPIs. Worked with MySQL databases to implement CRUD operations and ensure data integrity across web applications.</p>
-                                </div>
-                                <div class="work-info">
-                                    <h3>Web Development &amp; Designing Intern</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">Nov 2021 - Dec 2021</button>
-                                    <br><i style="color: aliceblue;">The Sparks Foundation</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Developed a banking management system using HTML, CSS, PHP, and MySQL. Designed and implemented SQL database schemas for transaction management. Created data visualization dashboards for tracking banking operations. Received golden badge for excellent performance in Web Development Internship and silver badge for HR Internship.</p>
-                                </div>
-                                <div class="work-info">
-                                    <h3>Java Developer Intern</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">Apr 2024 - Apr 2024</button>
-                                    <br><i style="color: aliceblue;">TECHPLEMENT</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Developed a Currency Converter application using Java with SQL database backend. Implemented database connectivity using JDBC for storing and retrieving currency exchange rates. Created SQL stored procedures and triggers for automated data updates. Worked on optimizing database queries for improved application performance.</p>
-                                </div>
-                                <div class="work-info">
-                                    <h3>Java Programmer</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">Apr 2021 - Jul 2021</button>
-                                    <br><i style="color: aliceblue;">CodeSpeedy Technology Private Limited</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Developed Java applications with strong focus on SQL database integration and management. Designed and implemented database schemas, wrote optimized SQL queries for efficient data retrieval and manipulation. Created data-driven solutions using JDBC for seamless database connectivity. Worked on SQL stored procedures, triggers, and database performance tuning to enhance application efficiency and data integrity.</p>
-                                </div>
-                                <div class="work-info">
-                                    <h3>PHP-MySQL Developer Intern</h3>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm">Dec 2020 - Jan 2021</button>
-                                    <br><i style="color: aliceblue;">Suven Consultants and Technology Pvt.Ltd.</i>
-                                    <h5 style="color: aliceblue;">Description:</h5>
-                                    <p>Developed dynamic web applications using PHP and MySQL. Created SQL dashboards and reports that helped management make data-driven decisions. Implemented real-time data import from MySQL databases to Excel dashboards for business intelligence. Worked on database design, query optimization, and backend development with focus on efficient data retrieval and storage.</p>
-                                </div>
+
+                <h3 class="heading2">Selected Credentials</h3>
+                <div class="timeline-heading">
+                    <div class="edu-info">
+                        <p>
+                            <strong>HackerRank SQL</strong> ·
+                            <a href="https://www.hackerrank.com/certificates/e3aeb91bac39" target="_blank">Certificate</a>
+                            <br>
+                            <strong>Oracle Cloud Infrastructure Foundations Associate</strong>
+                            <br>
+                            <strong>Postman API Fundamentals Student Expert</strong>
+                            <br>
+                            <strong>GSSOC’24 — Global Rank 80</strong>
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <div class="col">
+                <h3 class="heading2">Professional Experience</h3>
+                <div class="timeline-heading2">
+                    <div class="work-info">
+                        <h3>Recruitment Consultant — InfinityQuest IT Services</h3>
+                        <p>
+                            UK & European IT recruitment and technical hiring exposure, including LinkedIn sourcing,
+                            job portals, Boolean search and managing multiple technical requirements.
+                        </p>
+                    </div>
+                    <div class="work-info">
+                        <h3>Junior IT Recruiter — OneSource Consulting</h3>
+                        <p>IT recruitment and technical sourcing exposure.</p>
+                    </div>
+                    <div class="work-info">
+                        <h3>Cybersecurity / Software Internships</h3>
+                        <p>
+                            Internship experience across cybersecurity, Java, web development and software projects,
+                            with practical exposure to database-backed applications and technical implementation.
+                        </p>
+                    </div>
+                </div>
             </div>
-        </section>
-        <!--Contact Section-->
-        <section id="contact" style="margin-top: 150px; padding-top: 60px; clear: both;">
-            
-            <div class="card">
-                <h2 style="color:dodgerblue;text-align: center;">Get in touch with me</h2>
-                <h6 style="color: black;text-align: center;">My inbox is always open. Whether you have a question or just want to say hi, I'll try my best to get back to you!!!</h6>
-                <a href="mailto:imsivasai01@gmail.com" target="_blank" style="text-align: center;margin-top: 10px; "><button type="button" class="btn btn-outline-warning">Click Me!!</button></a>
+        </div>
+    </section>
+
+    <section id="contact" style="margin-top:120px;padding-top:60px;clear:both;">
+        <div class="card">
+            <h2 style="color:dodgerblue;text-align:center;">Get in touch with me</h2>
+            <h6 style="color:black;text-align:center;">SQL • Databases • AI-Assisted Software Development • Software Engineering</h6>
+            <div class="text-center mt-3">
+                <a href="mailto:imsivasai01@gmail.com"><button type="button" class="btn btn-outline-warning">Email Me</button></a>
+                <a href="https://www.linkedin.com/in/pallasivasai/" target="_blank"><button type="button" class="btn btn-outline-primary">LinkedIn</button></a>
+                <a href="https://github.com/pallasivasai" target="_blank"><button type="button" class="btn btn-outline-dark">GitHub</button></a>
             </div>
-        </section>  
-        <!--Footer Section-->
-        <div style="background-color: #181818;padding: 15px 0px 15px 0px;">
-            <p style="color: white;text-align: center;">Made with ❤️</p>
-            <h4 style="text-align: center;color: aliceblue;">By <span style="color: #3cff00;">P</span>siva <span style="color: #22ff00;">S</span>ai</h4>
-        </div> 
-        <!--Script file-->
-        <script>
-        $(window).on('load', function() { 
+        </div>
+    </section>
+
+    <div style="background-color:#181818;padding:15px 0;">
+        <p style="color:white;text-align:center;margin-bottom:5px;">Made with ❤️</p>
+        <h4 style="text-align:center;color:aliceblue;">By <span style="color:#3cff00;">P</span>siva <span style="color:#22ff00;">S</span>ai</h4>
+    </div>
+
+    <script>
+        $(window).on('load', function() {
             $('.loader-wrapper').delay(1000).fadeOut('slow');
-           // $('body').delay(1000).css({'overflow':'visible'});
-            $('.loader-wrapper').on('scroll touchmove mousewheel', function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-           })
-        })
-        </script>
-        <script>
-        $('#myTopnav').on('scroll touchmove mousewheel', function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        })
-        </script>
-        <script src="script.js" type="text/javascript"></script>
-    </body>
+            $('.loader-wrapper').on('scroll touchmove mousewheel', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+        });
+    </script>
+    <script src="script.js" type="text/javascript"></script>
+</body>
 </html>
