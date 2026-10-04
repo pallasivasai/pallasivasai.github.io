@@ -854,3 +854,27 @@ body{
 .project-card:nth-child(13) { animation-delay: 1.3s; }
 .project-card:nth-child(14) { animation-delay: 1.4s; }
 .project-card:nth-child(15) { animation-delay: 1.5s; }
+
+
+/* Resume button */
+.resume-color-btn {
+    display: block;
+    margin: 28px auto 0;
+    padding: 11px 28px;
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #00ff0d, #00aaff, #8a2be2);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.4px;
+    box-shadow: 0 0 18px rgba(0, 255, 13, 0.35);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.resume-color-btn:hover {
+    color: #ffffff;
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 0 28px rgba(0, 170, 255, 0.55);
+}
