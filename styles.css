@@ -283,8 +283,10 @@ body{
     text-align:center;
 }
 #skills{
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     padding-top: 40px;
+    padding-bottom: 80px;
     margin-bottom: 20px;
 }
 #skills h4{
