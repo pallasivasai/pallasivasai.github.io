@@ -235,6 +235,12 @@
                     <span class="tech-badge">CRUD</span>
                     <span class="tech-badge">JSONB</span>
                 </div>
+                <div class="project-evidence"><strong>Database architecture:</strong> Field Designer → Dynamic Form → JSON payload → Supabase/PostgreSQL <code>demo_items</code> JSONB → Generated Table</div>
+                <div class="db-architecture compact" aria-label="CRUD database architecture visual">
+                    <div class="db-architecture-title"><i class="fa fa-sitemap"></i><span>Dynamic CRUD Data Flow</span></div>
+                    <div class="db-mini-flow"><div class="db-node"><i class="fa fa-pencil"></i><strong>Field Designer</strong><span>Fields + validation</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-edit"></i><strong>Dynamic Form</strong><span>React state</span></div><div class="db-arrow">→</div><div class="db-node db-node-main"><i class="fa fa-database"></i><strong>demo_items</strong><span>JSONB in PostgreSQL</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-table"></i><strong>CRUD Table</strong><span>Read · Update · Delete</span></div></div>
+                    <div class="db-pill-row"><span>INSERT</span><span>SELECT / JSONB</span><span>UPDATE</span><span>DELETE</span></div>
+                </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/sai-crudop" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
                     <a href="https://sai-crudop.lovable.app" target="_blank" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</a>
@@ -252,6 +258,12 @@
                     <span class="tech-badge">PHP</span>
                     <span class="tech-badge">MySQLi</span>
                     <span class="tech-badge">SQL</span>
+                </div>
+                <div class="project-evidence"><strong>Database architecture:</strong> Registration form → MySQLi prepared INSERT → <code>sai</code> registration table ← prepared SELECT ← Login form</div>
+                <div class="db-architecture compact" aria-label="Authentication database architecture visual">
+                    <div class="db-architecture-title"><i class="fa fa-lock"></i><span>PHP + MySQL Authentication Flow</span></div>
+                    <div class="db-mini-flow auth-flow"><div class="db-node"><i class="fa fa-user-plus"></i><strong>Register</strong><span>Form fields</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-code"></i><strong>connect.php</strong><span>MySQLi + prepared INSERT</span></div><div class="db-arrow">→</div><div class="db-node db-node-main"><i class="fa fa-database"></i><strong>Registration Table</strong><span>MySQL / MariaDB</span></div><div class="db-arrow">←</div><div class="db-node"><i class="fa fa-sign-in"></i><strong>login.php</strong><span>Prepared SELECT + compare</span></div></div>
+                    <div class="db-pill-row warning"><span>Demo / Learning Project</span><span>Production: password_hash()</span></div>
                 </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/Signup-login-system-with-working-data-base" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
@@ -271,6 +283,12 @@
                     <span class="tech-badge">SQL Joins</span>
                     <span class="tech-badge">CRUD</span>
                 </div>
+                <div class="project-evidence"><strong>Database architecture:</strong> Session-protected admin → Voters + Positions + Candidates → Ballot ordering → Votes → Dashboard tally</div>
+                <div class="db-architecture compact" aria-label="Voting database architecture visual">
+                    <div class="db-architecture-title"><i class="fa fa-check-square-o"></i><span>Voting Management Architecture</span></div>
+                    <div class="db-mini-flow"><div class="db-node"><i class="fa fa-user"></i><strong>Admin Session</strong><span>PHP session guard</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-users"></i><strong>Voters</strong><span>Password + voter ID</span></div><div class="db-arrow">→</div><div class="db-node db-node-main"><i class="fa fa-list-ol"></i><strong>Positions</strong><span>Priority + max votes</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-group"></i><strong>Candidates</strong><span>Position mapping</span></div></div>
+                    <div class="db-pill-row"><span>Ballot / AJAX</span><span>Votes</span><span>Tally / Charts</span></div>
+                </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/votesystem" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
                 </div>
@@ -289,6 +307,13 @@
                     <span class="tech-badge">JOIN</span>
                     <span class="tech-badge">Python</span>
                 </div>
+                <div class="project-evidence"><strong>Database architecture:</strong> Users → Employees → Performance / Attendance / Goals / Leave Records, with Departments linked to Employees</div>
+                <div class="db-architecture compact" aria-label="HR workforce database architecture visual">
+                    <div class="db-architecture-title"><i class="fa fa-sitemap"></i><span>HR Workforce Relational Model</span></div>
+                    <div class="db-mini-flow"><div class="db-node"><i class="fa fa-lock"></i><strong>Users</strong><span>Auth + roles</span></div><div class="db-arrow">→</div><div class="db-node db-node-main"><i class="fa fa-user"></i><strong>Employees</strong><span>Core employee entity</span></div><div class="db-arrow">←</div><div class="db-node"><i class="fa fa-building"></i><strong>Departments</strong><span>Department mapping</span></div></div>
+                    <div class="db-relation-row"><span>Performance</span><span>Attendance</span><span>Goals</span><span>Leave Records</span></div>
+                    <div class="db-pill-row"><span>SQL JOIN</span><span>LEFT JOIN</span><span>Aggregation</span><span>Parameterized Queries</span></div>
+                </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/HR-Workforce-Employee-Performance-Management-System" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
                     <a href="https://hr-workforce-employee-performance-management-system.streamlit.app/" target="_blank" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</a>
@@ -306,6 +331,12 @@
                     <span class="tech-badge">PHP</span>
                     <span class="tech-badge">Transactions</span>
                     <span class="tech-badge">Relational DB</span>
+                </div>
+                <div class="project-evidence"><strong>Database architecture:</strong> Users → select sender → Transfer Money → receiver → Transaction History</div>
+                <div class="db-architecture compact" aria-label="Basic banking database architecture visual">
+                    <div class="db-architecture-title"><i class="fa fa-bank"></i><span>Basic Banking Transaction Flow</span></div>
+                    <div class="db-mini-flow"><div class="db-node"><i class="fa fa-users"></i><strong>Users</strong><span>Name · email · balance</span></div><div class="db-arrow">→</div><div class="db-node db-node-main"><i class="fa fa-money"></i><strong>Transfer Money</strong><span>Sender → Receiver</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-exchange"></i><strong>Transactions</strong><span>Transfer history + time</span></div></div>
+                    <div class="db-pill-row"><span>MySQL</span><span>PHP</span><span>Relational Tables</span></div>
                 </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/Basic_Banking_System" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
