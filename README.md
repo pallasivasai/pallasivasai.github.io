@@ -47,7 +47,7 @@ My portfolio is intentionally centered on:
 
 The live portfolio currently presents:
 
-- **7 featured SQL / database projects**
+- **6 featured SQL / database projects**
 - **4 database platforms:** MySQL, PostgreSQL, SQLite and Supabase
 - A dedicated **24-hour wrong-payment recovery research framework**
 - Database-focused work covering banking, authentication, CRUD, HR data and transaction systems
