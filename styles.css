@@ -751,3 +751,132 @@ body {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+
+/* =========================================================
+   RECRUITER UX ENHANCEMENTS
+   ========================================================= */
+
+.hero-role {
+    margin-top: 16px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-role span {
+    display: inline-block;
+    color: #0b1f3a;
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 850;
+    letter-spacing: -.5px;
+}
+
+.core-expertise {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    max-width: 900px;
+    margin: 25px auto 0;
+    position: relative;
+    z-index: 1;
+}
+
+.core-expertise span {
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, .07);
+    border: 1px solid #d6e5fa;
+    color: #2454a6;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#what-i-bring {
+    padding: 85px 6% 95px;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+}
+
+#what-i-bring h4 {
+    color: var(--muted);
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 38px;
+}
+
+.expertise-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.expertise-item {
+    min-height: 145px;
+    padding: 23px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fbfdff;
+    box-shadow: 0 7px 24px rgba(11, 31, 58, .055);
+    transition: .25s ease;
+}
+
+.expertise-item:hover {
+    transform: translateY(-4px);
+    border-color: #bfd4ee;
+    box-shadow: 0 13px 30px rgba(11, 31, 58, .10);
+}
+
+.expertise-item i {
+    display: block;
+    color: var(--blue);
+    font-size: 23px;
+    margin-bottom: 13px;
+}
+
+.expertise-item strong {
+    display: block;
+    color: var(--navy);
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+
+.expertise-item span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+    .expertise-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .hero-role span {
+        font-size: 26px;
+    }
+
+    .core-expertise {
+        padding: 0 8px;
+    }
+
+    .core-expertise span {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    #what-i-bring {
+        padding: 65px 18px 75px;
+    }
+
+    .expertise-grid {
+        grid-template-columns: 1fr;
+    }
+}
