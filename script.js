@@ -1,12 +1,10 @@
 // Typed.js animation
 var typed = new Typed('.animate', {
     strings: [
-        "P Siva Sai",
-        "a Learner",
         "a SQL Developer",
-        "a Backend Developer",
-        "a Web Developer",
-        "a Full Stack Developer",
+        "a Database Developer",
+        "a SQL & Database Engineer",
+        "a Database-Focused Developer",
     ],
     typeSpeed: 50,
     backDelay: 900,
