@@ -182,6 +182,40 @@
                     Profiles → Accounts → Transactions · Atomic transfer processing · Row locking ·
                     24-hour reversal workflow · Audit/recovery controls
                 </div>
+
+                <div class="db-architecture" aria-label="SAIBANK database architecture visual">
+                    <div class="db-architecture-title">
+                        <i class="fa fa-sitemap"></i>
+                        <span>Transaction & Recovery Architecture</span>
+                    </div>
+                    <div class="db-flow">
+                        <div class="db-node">
+                            <i class="fa fa-user"></i>
+                            <strong>Profiles</strong>
+                            <span>User identity</span>
+                        </div>
+                        <div class="db-arrow" aria-hidden="true">→</div>
+                        <div class="db-node">
+                            <i class="fa fa-credit-card"></i>
+                            <strong>Accounts</strong>
+                            <span>Balance & ownership</span>
+                        </div>
+                        <div class="db-arrow" aria-hidden="true">→</div>
+                        <div class="db-node db-node-main">
+                            <i class="fa fa-exchange"></i>
+                            <strong>Transactions</strong>
+                            <span>Atomic transfer + row locking</span>
+                        </div>
+                    </div>
+                    <div class="db-recovery-flow">
+                        <div class="db-recovery-line"></div>
+                        <div class="db-node db-node-recovery">
+                            <i class="fa fa-undo"></i>
+                            <strong>24-Hour Recovery</strong>
+                            <span>Verification → Reversal → Audit / Recovery controls</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/saibank" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
                     <a href="https://saibank.lovable.app/" target="_blank" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</a>
