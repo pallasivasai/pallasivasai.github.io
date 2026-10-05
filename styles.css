@@ -1545,3 +1545,143 @@ body {
         flex-direction: column;
     }
 }
+
+
+/* =========================================================
+   HORIZONTAL PROJECT SHOWCASE
+   Full-width project rows keep architecture and screenshots
+   readable instead of squeezing projects into narrow columns.
+   ========================================================= */
+
+#projects .projects-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#projects .project-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+    column-gap: 34px;
+    align-items: start;
+    padding: 34px 38px;
+}
+
+#projects .project-card > .project-title,
+#projects .project-card > .project-description {
+    grid-column: 1;
+}
+
+#projects .project-card > .project-title {
+    grid-row: 1;
+}
+
+#projects .project-card > .project-description {
+    grid-row: 2;
+}
+
+#projects .project-card > .project-tech {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#projects .project-card > .project-evidence {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+#projects .project-card > .db-architecture {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    align-self: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 18px;
+}
+
+#projects .project-card > .project-screenshots {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    width: 100%;
+    margin-top: 4px;
+}
+
+#projects .project-card > .project-buttons {
+    grid-column: 1 / -1;
+    grid-row: 6;
+}
+
+#projects .project-card:not(:has(.db-architecture)) > .project-buttons {
+    grid-row: 5;
+}
+
+#projects .project-card[style*="dashed"] {
+    display: flex;
+    min-height: 220px;
+}
+
+#projects .project-screenshots {
+    padding-top: 25px;
+    border-top: 1px solid #e1e9f2;
+}
+
+#projects .screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+#projects .screenshot-card {
+    min-width: 0;
+}
+
+#projects .screenshot-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
+}
+
+@media (max-width: 950px) {
+    #projects .project-card {
+        display: flex;
+        flex-direction: column;
+        padding: 28px 24px;
+    }
+
+    #projects .project-card > * {
+        width: 100%;
+    }
+
+    #projects .project-card > .db-architecture {
+        margin-top: 8px;
+    }
+
+    #projects .screenshot-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #projects .screenshot-card img {
+        aspect-ratio: 16 / 9;
+    }
+}
+
+@media (max-width: 600px) {
+    #projects .project-card {
+        padding: 25px 18px;
+        border-radius: 15px;
+    }
+
+    #projects .project-title {
+        font-size: 20px;
+    }
+
+    #projects .project-description {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+}
