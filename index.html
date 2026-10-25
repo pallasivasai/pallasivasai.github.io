@@ -216,10 +216,32 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="project-screenshots">
+                    <div class="project-screenshots-heading">
+                        <div>
+                            <strong>SAIBANK in action</strong>
+                            <span>Visual proof of the transaction, recovery and database-driven workflow.</span>
+                        </div>
+                        <span class="screenshot-count">3 screenshots</span>
+                    </div>
+                    <div class="screenshot-grid">
+                        <a class="screenshot-card" href="assets/saibank/saibank-transaction-dashboard.png" target="_blank" rel="noopener noreferrer">
+                            <img src="assets/saibank/saibank-transaction-dashboard.png" alt="SAIBANK dashboard showing recent transaction records and reversal activity" loading="lazy">
+                            <span><i class="fa fa-bar-chart"></i> Transaction dashboard</span>
+                        </a>
+                        <a class="screenshot-card" href="assets/saibank/saibank-24-hour-recovery-window.png" target="_blank" rel="noopener noreferrer">
+                            <img src="assets/saibank/saibank-24-hour-recovery-window.png" alt="SAIBANK transaction history showing the wrong payment recovery action and remaining 24-hour window" loading="lazy">
+                            <span><i class="fa fa-clock-o"></i> 24-hour recovery window</span>
+                        </a>
+                        <a class="screenshot-card" href="assets/saibank/saibank-reversal-completed.png" target="_blank" rel="noopener noreferrer">
+                            <img src="assets/saibank/saibank-reversal-completed.png" alt="SAIBANK transaction history showing a wrong payment reversal and restored amount" loading="lazy">
+                            <span><i class="fa fa-history"></i> Reversal completed</span>
+                        </a>
+                    </div>
+                </div>
                 <div class="project-buttons">
                     <a href="https://github.com/pallasivasai/saibank" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
-                    <a href="https://saibank.lovable.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success btn-project" aria-label="Open live SAIBANK demo"><i class="fa fa-play-circle"></i> Live Demo ↗</a>
+                    <a href="https://saibank.lovable.app/" target="_blank" class="btn btn-outline-success btn-project"><i class="fa fa-play-circle"></i> Demo</a>
                 </div>
             </div>
 
@@ -321,7 +343,28 @@
                 </div>
             </div>
 
-            
+            <div class="project-card">
+                <h3 class="project-title">🏧 Basic Banking System — MySQL</h3>
+                <p class="project-description">
+                    PHP + MySQL banking application with Users and Transaction tables, money transfers,
+                    transaction history and relational data workflows.
+                </p>
+                <div class="project-tech">
+                    <span class="tech-badge">MySQL</span>
+                    <span class="tech-badge">PHP</span>
+                    <span class="tech-badge">Transactions</span>
+                    <span class="tech-badge">Relational DB</span>
+                </div>
+                <div class="project-evidence"><strong>Database architecture:</strong> Users → select sender → Transfer Money → receiver → Transaction History</div>
+                <div class="db-architecture compact" aria-label="Basic banking database architecture visual">
+                    <div class="db-architecture-title"><i class="fa fa-bank"></i><span>Basic Banking Transaction Flow</span></div>
+                    <div class="db-mini-flow"><div class="db-node"><i class="fa fa-users"></i><strong>Users</strong><span>Name · email · balance</span></div><div class="db-arrow">→</div><div class="db-node db-node-main"><i class="fa fa-money"></i><strong>Transfer Money</strong><span>Sender → Receiver</span></div><div class="db-arrow">→</div><div class="db-node"><i class="fa fa-exchange"></i><strong>Transactions</strong><span>Transfer history + time</span></div></div>
+                    <div class="db-pill-row"><span>MySQL</span><span>PHP</span><span>Relational Tables</span></div>
+                </div>
+                <div class="project-buttons">
+                    <a href="https://github.com/pallasivasai/Basic_Banking_System" target="_blank" class="btn btn-outline-primary btn-project"><i class="fa fa-code"></i> SQL / Code</a>
+                </div>
+            </div>
 
             <div class="project-card" style="background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border: 2px dashed rgba(0, 255, 13, 0.4);">
                 <h3 class="project-title" style="text-align:center;">🗃️ More SQL / Database Work</h3>
